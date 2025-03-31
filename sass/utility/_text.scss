@@ -1,0 +1,70 @@
+//
+// Text Label
+//
+
+// Text Label Base
+.fpdi-text-label {
+  @include text-label-variant( $color-grayscale-darkest, $font-weight-semibold, uppercase);
+  //letter-spacing: .5em;
+  margin-bottom: 0px;
+  padding-bottom: 0px;
+  font-size: 0.750em;
+  display: inline-block; //adicionado para remover o alcance do datepicker
+}
+
+.fpdi-text-label-none {
+	@include text-label-variant( $color-grayscale-darkest, $font-weight-semibold,none);
+	//letter-spacing: .5em;
+	margin-bottom: 0px;
+	padding-bottom: 0px;
+	font-size: 0.750em;
+	display: inline-block; //adicionado para remover o alcance do datepicker
+  }
+
+
+.pdi-normal-text{
+  color: $color-grayscale-base;
+  font-weight:  $font-weight-normal;
+  padding: 5px 15px;
+  width: 100%;
+  word-break: break-word;
+
+  .card-field-content {
+    padding: 0px 10px
+  }
+
+  img {
+    max-width: 100%;
+  }
+}
+
+a.fpdi-text-label:hover,
+a.fpdi-text-label:focus {
+  color: $color-grayscale-base;
+}
+
+// Text Label for Form Tips
+.fpdi-text-label-tip {
+  @include text-label-variant($color-grayscale-lighter, $font-weight-normal, none);
+
+  label + & {
+  	float: right !important;
+  }
+}
+
+.fpdi-text-title-page {
+  font-size: 1.125rem;
+  margin-top: 7px;
+  margin-bottom: 7px;
+}
+
+a {
+  cursor: pointer;
+  & *, &:before, & *:before {
+    cursor: pointer;
+  }
+}
+
+.cursor-not-allowed {
+  cursor: not-allowed;
+}

@@ -1,0 +1,129 @@
+//
+// Login Container
+//
+
+// Login Container Base
+.fpdi-login {
+  width: 45rem;
+  min-width: 25.9rem;
+}
+
+// Login Container Header
+.fpdi-login-header {
+
+  & h1 {
+    font-size: 1.4rem;
+    font-weight: $font-weight-semibold;
+  }
+  & > h1 + p {
+    margin-top: $margin-md;
+  }
+}
+
+// Generic Properties
+.fpdi-login-header {
+  @include content-spacing-margin-y($margin-sm, $margin-lg);
+  text-align: center;
+}
+
+.fpdi-login-footer {
+  margin-top: 20px;
+}
+
+// Login brand
+.fpdi-login-brand {
+  max-height: 110px;
+  @include content-spacing-margin-y($margin-xx-lg, $margin-sm);
+  margin-top: 77px;
+}
+
+// Login subtitle
+.fpdi-login-subtitle{
+    line-height: 22px;
+}
+
+.fpdi-recover-password-title{
+    text-align: left;
+    font-weight: 400;
+}
+
+.fpdi-login-title{
+  color: #00a740;
+  text-transform: uppercase;
+  font-size: 16px;
+  font-weight: 600;
+  margin-top: 12px;
+}
+
+// Login subtitle
+.frisco-login-subtitle{
+	line-height: 22px;
+	width: 480px;
+}
+
+.fpdi-login-description {
+  font-size: 12px;
+}
+
+.fpdi-community-description {
+  font-size: 13.5px;
+  padding-bottom: 5px;
+  max-width: 26.25rem;
+}
+
+.fpdi-community {
+  margin: 1rem 5% 0 0;
+  width: 26.5rem;
+}
+
+.fpdi-login-community {
+  display: flex;
+  justify-content: center;
+  padding: 0 10rem;
+  margin-bottom: 15px;
+}
+
+.fpdi-toggle-password {
+  position: absolute;
+  right: 10px;
+  top: 10px;
+
+  &:hover {
+    color: gray;
+  }
+}
+
+.fpdi-community-button{
+  background-color: transparent;
+  border: 2px solid #1d6596;
+  border-radius: 5px;
+  padding: 10px 20px;
+  font-weight: bold;
+  margin-right: 20px;
+
+  &:hover {
+    background-color: #f0f0f1;
+  }
+}
+
+.forrisco-community-button {
+  background-color: transparent;
+  border: 2px solid #7350b9;
+  border-radius: 5px;
+  padding: 10px 20px;
+  font-weight: bold;
+
+  &:hover {
+    background-color: #f0f0f1;
+  }
+ }
+ 
+ .for-community-logo {
+  width: 85px;
+  height: 23px;
+  vertical-align: middle;
+
+  &:hover {
+    cursor: pointer;
+  }
+ }

@@ -1,0 +1,135 @@
+$main-top-bar-gray: #9f9f9f;
+
+.main-top-bar {
+  height: $top-bar-height;
+  background-color: $background-color;
+  width: 100%;
+  position: sticky;
+  top: 0;
+  z-index: 100;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0 2.5rem;
+  box-shadow: 0px 2px 11px 0px rgba(0,0,0,0.16);
+  -webkit-box-shadow: 0px 2px 11px 0px rgba(0,0,0,0.16);
+  -moz-box-shadow: 0px 2px 11px 0px rgba(0,0,0,0.16);
+}
+
+.main-top-bar__company-logo {
+  height: 50px;
+}
+
+.main-top-bar__container {
+  display: flex;
+  justify-content: end;
+  align-items: center;
+}
+
+.main-top-bar__container__right {
+  display: flex;
+  justify-content: space-between;
+  min-width: 330px;
+}
+
+.main-top-bar__app-switch {
+  background-color: #eaeaea;
+  height: 50px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 4px;
+  border-radius: 25px;
+}
+
+.main-top-bar__app-button {
+  width: 220px;
+  border-radius: 25px;
+  height: 100%;
+  & > img {
+    height: 23px;
+  }
+  background-color: transparent;
+  border: none;
+  cursor: pointer;
+  &:active,
+  &:focus {
+    outline: none;
+  }
+}
+
+.main-top-bar__app-button--active {
+  background-color: $background-color !important;
+  border: 1px solid #c5c5c5;
+  transition: background-color 0.2s;
+  cursor: default;
+}
+
+.main-top-bar__separator {
+  height: 50px;
+  width: 1px;
+  background-color: $main-top-bar-gray;
+  margin: 0 2.5rem;
+}
+
+.main-top-bar__user-container {
+  display: flex;
+  align-items: center;
+  height: 50px;
+  width: 220px;
+}
+
+.main-top-bar__user-info {
+  margin-left: 10px;
+  flex: 1
+}
+
+.main-top-bar__user-access-level {
+  margin: 0;
+  color: $main-top-bar-gray;
+}
+
+.main-top-bar__user-name {
+  margin: 0;
+}
+
+.main-top-bar__avatar {
+  width: 30px;
+  height: 30px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: purple;
+  color: $secondary-text;
+  border-radius: 50%;
+  font-weight: bold;
+  font-size: 18px;
+}
+
+.main-top-bar__menu {
+  padding: 0;
+  margin: 0;
+  min-width: 220px;
+  li {
+    list-style: none;
+    color: red;
+    height: 52px;
+
+    a {
+      color: #000;
+      height: inherit;
+      display: flex;
+      align-items: center;
+      padding-left: 1rem;
+    }
+
+    &:not(:last-child) {
+      border-bottom: 1px solid $border-color;
+    }
+
+    &:hover {
+      background-color: #eee;
+      transition: 0.2s all;
+    }
+  }
+}

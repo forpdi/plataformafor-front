@@ -1,0 +1,7 @@
+.error-control {
+  border-radius: $error-control-border-radius !important;
+}
+
+.error-control--active {
+  border: 1px solid $error-color !important; 
+}

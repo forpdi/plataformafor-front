@@ -1,0 +1,49 @@
+.check-circle {
+  display: flex;
+  position: relative;
+  cursor: pointer;
+  -webkit-user-select: none;
+  -moz-user-select: none;
+  -ms-user-select: none;
+  user-select: none;
+
+  input {
+    position: absolute;
+    opacity: 0;
+    cursor: pointer;
+    height: 0;
+    width: 0;
+  }
+
+  input:checked ~ .checkmark {
+    background-color: #2196F3;
+  }
+
+  input:not(:checked) ~ .checkmark {
+    background-color: #ccc !important;
+  }
+
+  &:hover input ~ .checkmark {
+    box-shadow: inset 0 0 0 50px rgba(0, 0, 0, 0.2);
+  }  
+
+  .checkmark:after {
+    content: "";
+    position: absolute;
+    display: none;
+  }
+
+  .checkmark {
+    position: absolute;
+    top: 0;
+    left: 0;
+    height: 15px;
+    width: 15px;
+    border-radius: 50%;
+    background-color: #eee;
+  }
+}
+
+.check-circle__label-text {
+  margin-left: 30px;
+}

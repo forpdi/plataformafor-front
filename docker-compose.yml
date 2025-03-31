@@ -1,0 +1,30 @@
+version: "3.7"
+services:
+  forpdi-database:
+    image: mysql:5.7
+    environment:
+      MYSQL_ROOT_PASSWORD: docker12345
+      MYSQL_DATABASE: plataformafor
+    healthcheck:
+      test: ["CMD", "mysqladmin" ,"ping", "-h", "localhost"]
+      timeout: 20s
+      retries: 10
+  forpdi-backend:
+    build:
+      context: ../backend
+      args:
+        - properties=docker.dev.properties
+    image: platfor-backend
+    ports:
+      - 8009:8009
+      - 8080:8080
+    depends_on:
+      forpdi-database:
+        condition: service_healthy
+  forpdi-frontend:
+    build: .
+    image: platfor-front
+    depends_on:
+      - forpdi-backend
+    ports:
+      - 80:80  

@@ -1,0 +1,7 @@
+variables:
+  IMAGE_BUILD: $CI_BUILDER_BASE_URL/node:10
+  IMAGE_STAGING: $CI_BUILDER_BASE_URL/node:10
+
+include:
+  - project: ${CI_TEMPLATES_HOME}/frontend
+    file: frontend.yml

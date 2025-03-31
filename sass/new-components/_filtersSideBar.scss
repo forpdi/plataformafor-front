@@ -1,0 +1,32 @@
+.filters-sidebar {
+  padding: 15px 15px;
+  width: 245px;
+  width: 270px;
+
+  & label {
+  	font-size: 0.8125rem;//font-size: 0.6875rem;
+  }
+}
+
+.filters-sidebar__filter-container {
+  width: 100%;
+  margin-top: 0px !important;
+  margin-bottom: 25px !important;
+  label {
+      color: $fpdi-secondary;
+  }
+}
+
+.filters-sidebar__title {
+  display: flex;
+  flex-direction: row;
+  gap: 10px;
+  align-items: center;
+  justify-content: center;
+  width: 100%;
+
+  & > h2 {
+    text-transform: capitalize;
+    margin-top: 10px;
+  }
+}

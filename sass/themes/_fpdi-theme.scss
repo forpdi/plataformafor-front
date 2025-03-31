@@ -1,0 +1,138 @@
+$fpdi-primary-button: #0085D9;
+$fpdi-text-2: #0085d9;
+$fpdi-hover-1: #0085d9;
+$fpdi-hover-2: #005d98;
+$fpdi-hover-3: #edf1f3;
+$fpdi-color-border: #F0F0F0 #E5E5E5 #DADADA;
+
+$fpdi-primary: #133f61;
+
+$fpdi-background: #f0f4f6;
+$fpdi-lighten-background: lighten($fpdi-background, 2%);
+
+$fpdi-secondary: #fff;
+$fpdi-secondary-2: #f0f4f6;
+
+$fpdi-shadowed: #0000001f;
+
+$fpdi-text: #293a59;
+$fpdi-disabled-text: #c9c0c3;
+
+$fpdi-hover-1: darken($fpdi-primary, 10%);
+$fpdi-hover-2: darken($fpdi-secondary, 10%);
+$fpdi-hover-3: darken($fpdi-secondary-2, 10%);
+$fpdi-hover-4: #0000003f;
+
+$fpdi-border-color-1: #cac8c9;
+
+$hover-transition-time: 0.2s;
+
+.fpdi-primary-color {
+  color: $fpdi-primary;
+}
+
+.fpdi-text-color {
+  color: $fpdi-text;
+}
+
+.fpdi-primary-bg {
+  background-color: $fpdi-primary;
+}
+
+.fpdi-primary-border {
+  border-color: $fpdi-primary;
+}
+
+.fpdi-background-lighten-bg {
+  background-color: $fpdi-lighten-background;
+}
+
+.fpdi-secondary-color {
+  color: $fpdi-secondary;
+}
+
+.fpdi-secondary-2-bg {
+  background-color: $fpdi-secondary-2;
+}
+
+.fpdi-secondary-bg {
+  background-color: $fpdi-secondary;
+}
+
+.fpdi-background-bg {
+  background-color: $fpdi-background;
+}
+
+.fpdi-disabled-text-color {
+  color: $fpdi-disabled-text;
+}
+
+.fpdi-shadowed {
+  background-color: $fpdi-shadowed;
+}
+
+.fpdi-hover-1-bg {
+  &:hover {
+    background-color: $fpdi-hover-1;
+    transition: $hover-transition-time;
+  }
+}
+
+.fpdi-hover-2-bg {
+  &:hover {
+    background-color: $fpdi-hover-2;
+    transition: $hover-transition-time;
+  }
+}
+
+.fpdi-hover-3-bg {
+  &:hover {
+    background-color: $fpdi-hover-3;
+    transition: $hover-transition-time;
+  }
+}
+
+.fpdi-hover-4-bg {
+  &:hover {
+    background-color: $fpdi-hover-4;
+    transition: $hover-transition-time;
+  }
+}
+
+.fpdi-hover-secondary-color{
+  &:hover{
+    color: $fpdi-secondary;
+  }
+}
+
+.fpdi-border-color-1 {
+  border-color: $fpdi-border-color-1;
+}
+
+.fpdi-border-color-2 {
+  border-color: $fpdi-secondary-2;
+}
+
+.fpdi-active-1 {
+  background-color: $fpdi-primary;
+  color: $fpdi-secondary;
+}
+
+.fpdi-radio-color-1 {
+  &:not(:checked) {
+    &:not(:hover) {
+      background-color: $fpdi-background;
+    }
+  }
+  &:checked {
+    background-color: $fpdi-primary;
+  }
+}
+
+.fpdi-community-bg {
+  background-color: $fpdi-primary;
+}
+
+.fpdi-secondary-border-color {
+  border-color: $fpdi-primary;
+}

@@ -1,0 +1,8 @@
+.select-box {
+  @extend .input;
+  width: 100%;
+  appearance: none;
+  background: url(/images/caret-down.png) no-repeat scroll;
+  background-position: top 50% right 5px;
+  background-color: $background-color;
+}

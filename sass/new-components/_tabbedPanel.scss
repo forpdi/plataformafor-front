@@ -1,0 +1,59 @@
+$content-panel-padding: 25px;
+
+.tabbed-panel__tabs {
+  display: flex;
+  list-style-type: none;
+  margin: 0;
+  padding: 0;
+  position: sticky;
+  z-index: 2;
+  top: 0;
+  .tab-item {
+    background-color: darken($background-color, 2%);
+    margin-right: 12px;
+    text-align: center;
+    text-transform: uppercase;
+    display: flex;
+    align-items: center;
+    .tab-item-label {
+      display: block;
+      margin: 0;
+      padding: 15px 40px 15px 40px;
+      font-size: 12px;
+    }
+    .tab-item-label--inactive {
+      &:hover, &:active, &:focus {
+        cursor: pointer;
+      }
+    }
+    .tab-item-label--without-action {
+      background-color: $background-color;
+      margin: 0;
+      &:hover {
+        cursor: default;
+      }
+    }
+    .tab-item-label--active {
+      background-color: $background-color;
+      cursor: default;
+      &:hover {
+        background-color: $background-color;
+        cursor: default !important;
+      }
+    }
+  }
+}
+
+.tabbed-panel__top-container {
+  background-color: $background-color;
+  display: flex;
+  justify-content: space-between;
+  padding: $content-panel-padding $content-panel-padding 48px;
+  position: sticky;
+  z-index: 2;
+}
+
+.tabbed-panel__main-container {
+  background-color: $background-color;
+  padding: 0 $content-panel-padding $content-panel-padding * 3;
+}

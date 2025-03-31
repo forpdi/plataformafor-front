@@ -1,0 +1,15 @@
+.dashboard-card {
+  background-color: $background-color;
+  border-radius: 7px;
+  display: flex;
+  flex-direction: column;
+  padding: 1rem;
+}
+
+.dashboard-card__header {
+  margin-bottom: 7px;
+}
+
+.frisco-community-card-title {
+  color: $frisco-community;
+}
