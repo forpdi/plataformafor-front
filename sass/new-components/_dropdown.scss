@@ -1,0 +1,16 @@
+.dropdown__content {
+  @extend .dropdown-menu;
+  left: auto;
+  right: 0;
+  margin: 0 auto 0 auto;
+  padding: 0;
+}
+
+.dropdown__content--right {
+  left: 0;
+}
+
+.dropdown__content--info {
+  width: max-content;
+  max-width: 25vw;
+}

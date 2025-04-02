@@ -1,0 +1,144 @@
+.multi-select-check-boxes {
+  .css-11unzgr {
+    @extend .custom-scrollbar;
+  }
+
+  .css-6y1x9t-control {
+    border-color: $frisco-border-color-1;
+    box-shadow: none;
+    &:hover, &:active, &:focus {
+      border-color: $frisco-border-color-1;
+      box-shadow: none;
+      outline: none;
+    }
+  }
+}
+
+.multi-select-check-boxes__cutted-text {
+  .css-xxmca8-option, .css-1lfay88-option {
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    overflow: hidden;
+  }
+}
+
+.frisco-multi-select-check-boxes {
+  .css-1v99tuv {
+    color: $frisco-text;
+  }
+
+  .css-uj2akl-container {
+    border-color: $frisco-border-color-1;
+  }
+
+  .css-11unzgr {
+    color: $frisco-text;
+  }
+
+  .css-xxmca8-option {
+    border-color: $frisco-border-color-1;
+  }
+
+  .css-1g6gooi {
+    color: $frisco-text;
+  }
+}
+
+.multi-select-check-boxes__custom {
+  .css-1r4vtzz, .css-48ayfv {
+    @extend .input;
+    box-shadow: none;
+    padding: 6px 8px 6px 8px;
+    width: 100%;
+  }
+  
+  .css-11unzgr {
+    padding: 0;
+  }
+  
+  .css-48ayfv {
+    border-bottom-left-radius: 0;
+    border-bottom-right-radius: 0;
+  }
+  
+  & > div > div {
+    width: 100%;
+    margin-top: 0px !important;
+    border-radius: 7px !important;
+    overflow: hidden;
+  }
+  
+  .css-xxmca8-option, .css-1lfay88-option {
+    border: none;
+    padding: 10px;
+    display: flex;
+    align-items: flex-start;
+    flex-direction: row;
+
+    & > input {
+      margin-top: 4px;
+      transform: scale(1.5)
+    }
+  }
+  
+  .css-1lfay88-option {
+    font-weight: normal;
+  }
+  
+  .css-12h3gvg {
+    border-radius: 0;
+    box-shadow: none;
+    padding: 0;
+  }
+  
+  .css-uj2akl-container {
+    border-top-left-radius: 0;
+    border-top-right-radius: 0;
+    padding: 0px;
+  }
+  
+  .css-1gpjby2 {
+    background: url(/images/caret-down.png) no-repeat scroll;
+    background-position: top 50% right 2px;
+    width: 24px;
+    height: 24px;
+    
+    & > svg {
+      display: none;
+    }
+  }
+}
+
+.multi-select-check-boxes__lists {
+  .css-1r4vtzz, .css-48ayfv {
+    min-width: 205px;
+  }
+
+  .css-1jllj6i-control, .css-6y1x9t-control {
+    width: auto;
+    min-width: 150px;
+  }
+  
+  .css-xxmca8-option, .css-1lfay88-option {
+    border: none;
+    padding: 10px;
+    display: flex;
+    align-items: flex-start;
+    flex-direction: row;
+    width: 100%;
+    max-width: 205px;
+    min-width: 150px;
+
+    & > input {
+      margin-top: 4px;
+      transform: scale(1.5)
+    }
+  }
+  
+  .css-uj2akl-container {
+    border-top-left-radius: 0;
+    border-top-right-radius: 0;
+    padding: 0px;
+    min-width: 205px;
+  }
+}

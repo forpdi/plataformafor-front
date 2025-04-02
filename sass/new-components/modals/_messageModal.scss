@@ -1,0 +1,23 @@
+.message-modal-text {
+  margin: 10px 45px 50px 45px !important;
+  text-align: justify;
+  text-justify: inter-word;
+  max-width: 500px;
+  word-break: break-all;
+  hyphens: manual;
+}
+
+.message-modal-subject {
+  font-weight: 600;
+  margin-left: 5px;
+  max-width: 450px;
+  text-transform: none;
+  word-break: break-all;
+}
+
+.message-sender {
+  display: inline-flex;
+  align-items: center;
+  margin: 0px 20px 10px 14px;
+  padding: 5px;
+}

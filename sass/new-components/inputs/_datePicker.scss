@@ -1,0 +1,30 @@
+$date-picker-width: 160px;
+
+.date-picker-container {
+  width: $date-picker-width;
+}
+
+.date-picker {
+  @extend .input;
+  padding-left: 35px;
+  width: 158px;
+}
+
+.frisco-date-picker {
+  background: url("/images/calendar-alt-solid.svg") no-repeat scroll 130px 50%;
+}
+
+.for-date-picker {
+  background: url("/images/calendar-for.svg") no-repeat scroll 130px 50%;
+}
+
+.for-date-picker-start {
+  background: url("/images/calendar-for.svg") no-repeat scroll 0px 50%;
+}
+
+.react-datepicker__input-container {
+  position: static !important;
+  background-color: white;
+  width: 155px;
+  border-radius: 7px;
+}

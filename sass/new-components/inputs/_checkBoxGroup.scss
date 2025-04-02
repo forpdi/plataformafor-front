@@ -1,0 +1,29 @@
+.check-group-container {
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+  margin-top: 0 !important;
+}
+
+.check-group {
+  display: flex;
+  flex-direction: column;
+  min-height: 100px;
+  max-height: 200px;
+  padding-left: 20px;
+  overflow-x: hidden;
+  overflow-y: auto;
+}
+
+.check-group-topic-container {
+  padding-bottom: 15px;
+  &:not(:first-child) {
+    padding-top: 15px;
+  }
+}
+
+.check-group-border {
+  @extend .input;
+  @extend .frisco-border-color-1;
+  @extend .custom-scrollbar;
+}

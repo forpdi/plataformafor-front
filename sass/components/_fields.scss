@@ -1,0 +1,135 @@
+.budget-field-table{
+	width: 100%;
+	font-size: 11px !important;
+	margin-bottom: 0px;
+}
+
+.budget-field-table-prefix {
+  position: absolute;
+  margin-top: 1px;
+  margin-left: 4px;
+  color: #272525;
+  font-size: 14px;
+  pointer-events: none;
+  z-index: 1;
+}
+
+.budget-btns{
+	float: right;
+}
+
+.marginLeft15{
+	margin-left: 15px;
+}
+
+.budget-new-btn, .budget-export-btn {
+	padding: 5px 18px 5px 18px;
+}
+
+.delete-all-btn{
+	padding: 3px 10px 3px 10px;
+    margin-left: 50px;
+    position: absolute;
+}
+
+.delete-all-btn :hover{
+	color: #A9A9A9 !important;
+}
+
+.padding15{
+	padding: 15px;
+}
+
+.btn-height {
+	height: 25px;	
+}
+
+
+.displayFlex{
+	display: flex;
+}
+
+.budget-title{
+	flex: 1;
+	padding-top: 5px;
+	font-size: 14px !important;
+	word-break: break-word;
+	overflow-wrap: break-word;
+	justify-content: center;
+	align-items: center;
+}
+
+.linked-objectives-col {
+	display: flex;
+	flex-direction: row;
+	align-items: center;
+	justify-content: center;
+	gap: 10px;
+}
+
+.edit-budget-col{
+	display: flex;
+	cursor: pointer;
+	white-space: nowrap
+}
+
+.accepted-budget{
+	background-color: #40D17D;
+	color: #FFF;
+	padding: 4px 2px 3px 3px !important;
+    font-weight: bold;
+    border-radius: 3px;
+    cursor: pointer;
+}
+
+.reject-budget{
+	color: #FFF;
+    background-color: #EA5949;
+    padding: 4px 2px 3px 3px !important;
+    font-weight: bold;
+    border-radius: 3px;
+    margin-left: 3px;
+    cursor: pointer;
+}
+
+.cursorPointer{
+	cursor: pointer;
+}
+
+.marginRight10{
+	margin-right: 10px;
+}
+
+.budgetCoinIcon{
+    color: green;
+    margin-left: 4px;
+}
+
+.subAction-select-box {
+	width: 100%;
+    padding: 2px;
+}
+
+.table-cell {
+	padding: 8px;
+}
+
+.small-width {
+	width: 100px; 
+}
+
+.large-width {
+	width: 50%; 
+}
+
+.flex-width {
+	width: auto;
+}
+
+.date-picker-width {
+	width: 70px;
+}
+
+.full-width {
+	width: 100%;
+}

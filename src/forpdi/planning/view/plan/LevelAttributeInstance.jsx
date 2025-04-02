@@ -1,0 +1,1192 @@
+import React from "react";
+import _ from 'underscore';
+import { Link } from 'react-router';
+
+import StructureStore from "forpdi/src/forpdi/planning/store/Structure.jsx";
+import BudgetStore from "forpdi/src/forpdi/planning/store/Budget.jsx";
+import ActionPlanStore from "forpdi/src/forpdi/planning/store/ActionPlan.jsx";
+import ScheduleStore from "forpdi/src/forpdi/planning/store/Schedule.jsx";
+import TableStore from "forpdi/src/forpdi/planning/store/TableFields.jsx";
+import DocumentStore from "forpdi/src/forpdi/planning/store/Document.jsx"
+import AggregateIndicator from "forpdi/src/forpdi/planning/widget/plan/AggregateIndicator.jsx"
+import PermissionsTypes from "forpdi/src/forpdi/planning/enum/PermissionsTypes.json";
+import GoalPerformance from "forpdi/src/forpdi/planning/widget/plan/GraphForIndicator.jsx";
+import LevelSons from "forpdi/src/forpdi/planning/widget/plan/LevelInstanceSons.jsx";
+import VerticalForm from "forpdi/src/forpdi/planning/widget/attributeForm/VerticalForm.jsx";
+import LoadingGauge from 'forpdi/src/components/LoadingGauge';
+import Modal from "forpdi/src/forpdi/core/widget/Modal.jsx";
+import Messages from "forpdi/src/Messages.jsx";
+import AttributeTypes from 'forpdi/src/forpdi/planning/enum/AttributeTypes.json';
+import Validation from 'forpdi/src/forpdi/core/util/Validation.jsx';
+import UserSession from "forpdi/src/forpdi/core/store/UserSession.jsx";
+import {
+	hasEditStructureItemPermission, hasAddAndDeletetructureItemPermission, isResponsibleForSomeParent, hasPermissionToFinishGoalAndEditFields,
+} from 'forpdi/src/forpdi/helpers/SthructureLevelsHelper.js';
+import ModalComponent from "forpdi/src/components/modals/Modal.jsx";
+import GoalsJustificationHistoryModal from "forpdi/src/forpdi/planning/widget/GoalsJustificationHistoryModal.jsx";
+
+
+var Validate = Validation.validate;
+
+var dateBegin = null;
+var dateEnd = null;
+
+export default React.createClass({
+	contextTypes: {
+		roles: React.PropTypes.object.isRequired,
+		router: React.PropTypes.object.isRequired,
+		planMacro: React.PropTypes.object.isRequired,
+		tabPanel: React.PropTypes.object.isRequired,
+		toastr: React.PropTypes.object.isRequired,
+		permissions: React.PropTypes.array.isRequired
+	},
+
+	getInitialState() {
+		return {
+			loading: true,
+			fields: [],
+			model: null,
+			title: "",
+			subTitle: "",
+			undeletable: false,
+			vizualization: true,
+			tabPath: this.props.location.pathname,
+			aggregate: false,
+			level: "",
+			showPolarityAlert: false,
+			beginIdx: null,
+			endIdx: null,
+			finishIdx: null,
+			levelInstanceId: null
+		};
+	},
+
+	getFields(model, agg) {
+		var fields = [];
+		if (model.data.level.indicator) {
+			var options = [{
+				name: Messages.get("label.aggregateSimples"),
+				value: !model.data.aggregate
+			}, {
+				name: Messages.get("label.aggregateAggregated"),
+				value: model.data.aggregate
+			}];
+
+			fields.push({
+				name: "indicator-type",
+				type: AttributeTypes.INDICATOR_TYPE,
+				required: true,
+				placeholder: "",
+				label: "tipo de indicador",
+				displayField: 'name',
+				valueField: 'value',
+				options: options,
+				onClick: this.onIndicatorTypeClick,
+				extraRender: this.renderAggregate,
+				disabled: this.context.roles.MANAGER || _.contains(this.context.permissions,
+					PermissionsTypes.MANAGE_PLAN_PERMISSION) ? false : true
+			});
+		}
+
+		fields.push({
+			name: "name",
+			type: "text",
+			required: true,
+			placeholder: "",
+			label: Messages.getEditable("label.name", "fpdi-nav-label"),
+			value: model.data.name,
+			disabled: this.context.roles.MANAGER || _.contains(this.context.permissions,
+				PermissionsTypes.MANAGE_PLAN_PERMISSION) ? false : true
+		});
+
+		if (model.data.level.attributes) {
+			model.data.level.attributes.map((model, idx) => {
+
+				var formattedValue = (model.attributeInstance ? model.attributeInstance.formattedValue : "");
+				var value = (model.attributeInstance ? model.attributeInstance.value : "");
+				var editModeValue = null;
+				if (model.type == AttributeTypes.NUMBER_FIELD && value != undefined) {
+					if (model.attributeInstance) {  //&& model.attributeInstance.valueAsNumber) {
+						value = model.attributeInstance.valueAsNumber || '';
+						editModeValue = value.toString().replace(".", ",");
+					} else {
+						value = "";
+						editModeValue = value;
+					}
+
+				}
+
+				if ((model.type == AttributeTypes.RESPONSIBLE_FIELD || model.type == AttributeTypes.MANAGER_FIELD) && model.attributeInstance && model.attributeInstance.valueAsNumber) {
+					value = model.attributeInstance.valueAsNumber
+				}
+				
+				if (model.type == AttributeTypes.RESPONSIBLE_FIELD) {
+					model.description = Messages.get('label.selectResponsible');
+				}
+				
+				if (model.type == AttributeTypes.MANAGER_FIELD) {
+					model.description = Messages.get('label.selectManager');
+				}
+
+				if (model.beginField) {
+					dateBegin = value;
+					this.setState({
+						beginIdx: idx
+					});
+				} else if (model.endField) {
+					dateEnd = value;
+					this.setState({
+						endIdx: idx
+					});
+				} else if (model.finishDate) {
+					this.setState({
+						finishIdx: idx
+					});
+				}
+
+				if (model.formatField && agg) {
+					fields.push({
+						name: "attribute" + idx,
+						type: model.type,
+						required: model.required,
+						placeholder: model.description,
+						label: model.label,
+						value: value,
+						formattedValue: formattedValue,
+						editModeValue: editModeValue,
+						disabled: true,
+						budgets: model.budgets,
+						extra: (model.budgets ? this.newLevelInstanceBudget : undefined),
+						schedule: model.schedule,
+						optionsField: model.optionsField,
+						users: model.users,
+						onChange: (model.beginField ? this.onChangeBegin : model.endField ? this.onChangeEnd : model.finishDate ? this.onChangeFinish : null),
+						extraSchedule: (model.schedule ? this.saveInstanceSchedule : undefined),
+						actionPlans: model.actionPlans,
+						extraActionPlans: (model.actionPlans ? this.newLevelInstanceActionPlan : undefined),
+						tableFields: model.tableFields,
+						extraTableFields: (model.tableFields ? this.saveInstanceTable : undefined),
+					});
+				} else if (model.reachedField || model.justificationField) {
+					fields.push({
+						name: "attribute" + idx,
+						type: model.type,
+						required: model.required,
+						placeholder: model.description,
+						label: model.label,
+						value: value,
+						formattedValue: formattedValue,
+						editModeValue: editModeValue,
+						justificationField: model.justificationField,
+						disabled: false,
+						budgets: model.budgets,
+						extra: (model.budgets ? this.newLevelInstanceBudget : undefined),
+						schedule: model.schedule,
+						optionsField: model.optionsField,
+						users: model.users,
+						onChange: (model.beginField ? this.onChangeBegin : model.endField ? this.onChangeEnd : model.finishDate ? this.onChangeFinish : null),
+						extraSchedule: (model.schedule ? this.saveInstanceSchedule : undefined),
+						actionPlans: model.actionPlans,
+						extraActionPlans: (model.actionPlans ? this.newLevelInstanceActionPlan : undefined),
+						tableFields: model.tableFields,
+						extraTableFields: (model.tableFields ? this.saveInstanceTable : undefined),
+					});
+				} else {
+					fields.push({
+						name: "attribute" + idx,
+						type: model.type,
+						required: model.required,
+						placeholder: model.description,
+						label: model.label,
+						value: value,
+						formattedValue: formattedValue,
+						editModeValue: editModeValue,
+						disabled: this.context.roles.MANAGER || _.contains(this.context.permissions,
+							PermissionsTypes.MANAGE_PLAN_PERMISSION) ? false : true,
+						budgets: model.budgets,
+						extra: (model.budgets ? this.newLevelInstanceBudget : undefined),
+						schedule: model.schedule,
+						optionsField: model.optionsField,
+						users: model.users,
+						onChange: (model.beginField ? this.onChangeBegin : model.endField ? this.onChangeEnd : model.finishDate ? this.onChangeFinish : null),
+						extraSchedule: (model.schedule ? this.saveInstanceSchedule : undefined),
+						actionPlans: model.actionPlans,
+						extraActionPlans: (model.actionPlans ? this.newLevelInstanceActionPlan : undefined),
+						tableFields: model.tableFields,
+						extraTableFields: (model.tableFields ? this.saveInstanceTable : undefined),
+					});
+				}
+
+				if (model.users) {
+					this.setState({
+						users: model.users
+					});
+				}
+			})
+		}
+
+		return fields;
+	},
+
+	onIndicatorTypeClick(evt) {
+		let isIndicatorSimple = evt.target.id.endsWith('0');
+		let normalRadio = this.refs['levelForm'].refs['indicator-type'].refs['indicator-type-option-0'];
+		let aggregateRadio = this.refs['levelForm'].refs['indicator-type'].refs['indicator-type-option-1'];
+
+		let agg;
+		if (isIndicatorSimple) {
+			aggregateRadio.checked = false;
+			aggregateRadio.value = false;
+			normalRadio.checked = true;
+			normalRadio.value = true;
+			agg = false;
+		} else {
+			if (this.state.haveChildren) {
+				this.context.toastr.addAlertError(Messages.get("label.error.noGoalsAggregateAggregated"));
+				aggregateRadio.checked = false;
+				aggregateRadio.value = false;
+				return false;
+			}
+			aggregateRadio.checked = true;
+			aggregateRadio.value = true;
+			normalRadio.checked = false;
+			normalRadio.value = false;
+			agg = true;
+		}
+
+		this.setState({
+			aggregate: agg,
+			fields: this.getFields(this.state.model, agg)
+		});
+	},
+
+	componentDidMount() {
+		var me = this;
+		this.getLevelInstanceAttributes(this.props.params.levelInstanceId);
+
+		StructureStore.on("levelGoalClosed", (model) => {
+			this.setState({
+				vizualization: true
+			})
+		});
+
+		StructureStore.on("goalsGenerated", (model) => {
+			if (model.data.auxValue) {
+				this.setState({
+					levelValue: model.data.auxValue
+				})
+			}
+		});
+
+		StructureStore.on('levelAttributeSaved', (model) => {
+			if (model.success == true) {
+				this.context.toastr.addAlertSuccess(Messages.get("label.success.informationSaved"));
+				this.refs.levelInstanceTitle.title = model.data.name;
+				var showPolarityAlert = false;
+				if (!this.state.undeletable && this.state.model.data.polarity != model.data.polarity)
+					showPolarityAlert = true;
+				this.setState({
+					vizualization: true,
+					model: model,
+					title: model.data.level.name,
+					subTitle: model.data.name,
+					levelValue: model.data.levelValue,
+					fields: this.getFields(model, model.data.aggregate),
+					aggregate: model.data.aggregate,
+					showPolarityAlert: showPolarityAlert
+				});
+			}
+			else {
+				this.context.toastr.addAlertError(Messages.get("label.impossibleSaveAttributes"));
+			}
+		}, me);
+
+		StructureStore.on('deleteLevelInstance', store => {
+			me.context.tabPanel.removeTabByPath(me.state.tabPath);
+			StructureStore.dispatch({
+				action: StructureStore.ACTION_FIND,
+				data: null
+			});
+			this.context.toastr.addAlertSuccess(store.data.name + " " + Messages.get("label.successDeleted"));
+		}, me);
+
+		StructureStore.on('favoriteSaved', model => {
+			this.setState({
+				favoriteExistent: true,
+				favoriteTotal: this.state.favoriteTotal + 1
+			});
+			this.context.toastr.addAlertSuccess(model.data.levelInstance.name + " " + Messages.get("label.addedFavorites"));
+		}, me);
+
+		StructureStore.on('favoriteRemoved', model => {
+			this.setState({
+				favoriteExistent: false,
+				favoriteTotal: this.state.favoriteTotal - 1
+			});
+			this.context.toastr.addAlertSuccess(model.data.levelInstance.name + " " + Messages.get("label.removedFavorites"));
+		}, me);
+
+		StructureStore.on("levelAttributeRetrieved", (model) => {
+			if ((model.data.id == this.state.levelInstanceId || this.state.levelInstanceId == null)) {
+				me.setState({
+					loading: false,
+					model: model,
+					title: model.data.level.name,
+					subTitle: model.data.name,
+					fields: this.getFields(model, model.data.aggregate),
+					aggregate: model.data.aggregate,
+					levelValue: model.data.levelValue,
+					level: model.data.level.name,
+					showPolarityAlert: false,
+					favoriteExistent: model.data.favoriteExistent,
+					favoriteTotal: model.data.favoriteTotal
+				});
+			}
+			me.context.tabPanel.addTab(me.state.tabPath, model.data.name);
+		}, me);
+
+		StructureStore.on("levelAttributeNoRetrieved", (model) => {
+			var url = window.location.href;
+			window.location.assign(url.split("#")[0] + "#/home");
+		}, me);
+
+		StructureStore.on("levelSonsRetrieved", (model) => {
+			me.setState({
+				undeletable: model.data.sons.list.length > 0 ? false : true
+			});
+		}, me);
+	},
+
+	componentWillUnmount() {
+		StructureStore.off(null, null, this);
+		BudgetStore.off(null, null, this);
+		ScheduleStore.off(null, null, this);
+		ActionPlanStore.off(null, null, this);
+	},
+
+	componentWillReceiveProps(newProps) {
+
+		this.setState({
+			vizualization: true
+		});
+		var el = document.getElementsByClassName("app-content")[0];		//pegando o elemento que contém os atributos
+		el.scrollTop = 0;														//voltando seu scroll para o topo
+		if (newProps.location.pathname != this.state.tabPath) {
+			this.setState({
+				tabPath: newProps.location.pathname,
+				loading: true,
+				levelInstanceId: newProps.params.levelInstanceId
+			});
+			this.getLevelInstanceAttributes(newProps.params.levelInstanceId);
+		}
+	},
+
+	getLevelInstanceAttributes(levelInstanceId) {
+		StructureStore.dispatch({
+			action: StructureStore.ACTION_RETRIEVE_LEVELATTRIBUTES,
+			data: {
+				id: levelInstanceId
+			}
+		});
+	},
+
+	newLevelInstanceBudget(subAction, name, committed, realized) {
+		BudgetStore.dispatch({
+			action: BudgetStore.ACTION_CREATE,
+			data: {
+				subAction: subAction,
+				name: name,
+				committed: committed,
+				realized: realized,
+				instanceId: this.props.params.levelInstanceId,
+			}
+		});
+	},
+
+	saveInstanceSchedule(scheduleInstance) {
+		ScheduleStore.dispatch({
+			action: ScheduleStore.ACTION_CUSTOM_SAVE,
+			data: {
+				scheduleInstance: {
+					id: scheduleInstance.id,
+					number: scheduleInstance.number,
+					description: scheduleInstance.description,
+					periodicity: scheduleInstance.periodicity,
+					scheduleValues: scheduleInstance.scheduleValues
+				},
+				scheduleId: scheduleInstance.scheduleId,
+				beginDate: scheduleInstance.begin,
+				endDate: scheduleInstance.end
+			},
+			opts: {
+				wait: true
+			}
+		});
+	},
+
+	saveInstanceTable(tableInstance) {
+		TableStore.dispatch({
+			action: TableStore.ACTION_CUSTOM_SAVE,
+			data: {
+				tableInstance: {
+					id: tableInstance.id,
+					tableValues: tableInstance.tableValues
+				},
+				tableFieldsId: tableInstance.tableFieldsId
+			},
+			opts: {
+				wait: true
+			}
+		});
+	},
+
+	newLevelInstanceActionPlan(actionPlan) {
+		ActionPlanStore.dispatch({
+			action: ActionPlanStore.ACTION_CUSTOM_CREATE,
+			data: {
+				actionPlan: {
+					...actionPlan,
+					begin: null,
+					end: null,
+				},
+				instanceId: this.state.model.data.id,
+				begin: actionPlan.begin,
+				end: actionPlan.end,
+				url: window.location.href
+			},
+			opts: {
+				wait: true
+			}
+		});
+	},
+
+
+	confirmCompleteGoal(id, closeOpenGoal) {
+		var msg = "";
+
+		{
+			closeOpenGoal ?
+				msg = Messages.get("label.msg.completeGoal")
+
+				: msg = Messages.get("label.msg.openGoal")
+		}
+
+		Modal.confirmCustom(() => {
+			Modal.hide();
+			{
+				StructureStore.dispatch({
+					action: StructureStore.ACTION_CLOSE_GOAL,
+					data: {
+						id: id,
+						openCloseGoal: closeOpenGoal
+					}
+				});
+				var newModel = this.state.model;
+				newModel.data.closed = !newModel.data.closed;
+				this.setState({
+					model: newModel
+				})
+			};
+		}, msg,
+			() => {
+				Modal.hide();
+			});
+	},
+
+	deleteLevelAttribute() {
+		var data = this.state.model;
+		if (this.state.undeletable) {
+			var msg = Messages.get("label.deleteConfirmation") + " " + this.state.model.data.name + "?";
+			Modal.confirmCancelCustom(() => {
+				Modal.hide();
+				var levelInstance = {
+					id: this.state.model.data.id,
+				};
+				StructureStore.dispatch({
+					action: StructureStore.ACTION_DELETE_LEVELINSTANCE,
+					data: levelInstance
+				});
+
+			}, msg, () => { Modal.hide() });
+
+			/*Modal.deleteConfirmCustom(() => {
+				Modal.hide();
+				var levelInstance = {
+					id: this.state.model.data.id,
+				};
+				StructureStore.dispatch({
+					action: StructureStore.ACTION_DELETE_LEVELINSTANCE,
+					data: levelInstance
+				});
+			},"Você tem certeza que deseja excluir " + this.state.model.data.name + "?");*/
+		}
+
+	},
+
+	saveFavoriteLevel() {
+		StructureStore.dispatch({
+			action: StructureStore.ACTION_SAVE_FAVORITE,
+			data: {
+				levelInstanceId: this.state.model.data.id
+			}
+		});
+	},
+
+	removeFavoriteLevel() {
+		var msg = Messages.get("label.msg.removeConfirmation") + " " + this.state.model.data.name + " " + Messages.get("label.msg.favorites");;
+		Modal.confirmCancelCustom(() => {
+			Modal.hide();
+
+			StructureStore.dispatch({
+				action: StructureStore.ACTION_REMOVE_FAVORITE,
+				data: {
+					levelInstanceId: this.state.model.data.id
+				}
+			});
+		}, msg, () => { Modal.hide() }
+		);
+	},
+
+	isNumber(n) {
+
+		return !isNaN(parseFloat(n)) && isFinite(n);
+	},
+
+	onSubmit(data) {
+		var validation = Validate.validateAttributePlan(this.state.model, this.refs['levelForm'], data, this.state.aggregate)
+
+		//finaliza aqui!
+		if (validation.boolMsg) {
+			this.context.toastr.addAlertError(validation.msg);
+			return;
+		}
+
+		var aggregateArray = [];
+		if (this.state.model.data.level.indicator && this.state.aggregate) {
+			var indicators = this.refs['levelForm'].refs['indicator-type'].refs['agg-ind-config'].selectedIndicators;
+			indicators.map((indicator, idx) => {
+				aggregateArray.push({
+					aggregate: {
+						id: indicator.id
+					},
+					indicator: {
+						id: this.state.model.data.id
+					},
+					percentage: indicator.percentage,
+					deleted: indicator.deleted
+				});
+			});
+		}
+
+		var levelInstance = {
+			id: this.state.model.data.id,
+			name: validation.nome,
+			plan: {
+				id: this.state.model.data.plan.id
+			},
+			level: {
+				id: this.state.model.data.level.id,
+				attributes: validation.attributes
+			},
+			aggregate: this.state.aggregate,
+			calculation: (this.refs['levelForm'].refs['indicator-type'] &&
+				this.refs['levelForm'].refs['indicator-type'].refs['agg-ind-config'] ?
+				this.refs['levelForm'].refs['indicator-type'].refs['agg-ind-config'].calculationValue : 0),
+			indicatorList: aggregateArray
+		};
+
+		var url = window.location.hash;
+		StructureStore.dispatch({
+			action: StructureStore.ACTION_SAVE_LEVELATTRIBUTES,
+			data: {
+				levelInstance: levelInstance,
+				url: url
+			}
+		});
+	},
+	onCancel() {
+		if (this.state.aggregate == true) {
+			this.setState({
+				vizualization: !this.state.vizualization,
+				aggregate: this.state.model.data.aggregate,
+				fields: this.getFields(this.state.model, this.state.model.data.aggregate),
+			});
+		} else {
+			this.editingAttributes();
+		}
+	},
+
+	editingAttributes() {
+		var list = this.state.selectedIndicators;
+		this.setState({
+			vizualization: !this.state.vizualization,
+			selectedIndicators: list,
+			aggregate: this.state.model.data.aggregate,
+			fields: this.getFields(this.state.model, this.state.model.data.aggregate),
+		});
+	},
+
+	goalsGenerate() {
+		StructureStore.dispatch({
+			action: StructureStore.ACTION_GOALSGENERATEACTION_GOALSGENERATE,
+			data: {
+				name: "teste",
+				expected: 10,
+				minimum: 5,
+				maximum: 20
+			}
+		});
+	},
+
+	onChangeBegin(data) {
+		var model = this.state.model;
+		this.setState({
+			model: model,
+		});
+		this.refs['levelForm'].refs["attribute" + this.state.beginIdx].props.fieldDef.value = data.format('DD/MM/YYYY');
+	},
+	onChangeEnd(data) {
+		var model = this.state.model;
+		this.setState({
+			model: model,
+		});
+		this.refs['levelForm'].refs["attribute" + this.state.endIdx].props.fieldDef.value = data.format('DD/MM/YYYY');
+	},
+	onChangeFinish(data) {
+		var model = this.state.model;
+		this.setState({
+			model: model,
+		});
+		this.refs['levelForm'].refs["attribute" + this.state.finishIdx].props.fieldDef.value = data.format('DD/MM/YYYY');
+	},
+
+	onlyNumber(evt) {
+		var key = evt.which;
+		if ((key < 48 || key > 57)) {
+			evt.preventDefault();
+			return;
+		}
+	},
+
+	isParent(model) {
+		this.setState({
+			haveChildren: model.data.sons.list.length > 0
+		});
+	},
+
+	exportLevelAttributes() {
+		//implementar o exportar pdf
+		var url = DocumentStore.url + "/exportLevelAttributes" + "?levelId=" + this.props.params.levelInstanceId;
+		url = url.replace(" ", "+");
+		Modal.hide();
+		var w = window.open(url);
+	},
+
+	openJustificationHistoryModal() {
+		const { levelInstanceId } = this.props.params;
+		const modal = <GoalsJustificationHistoryModal levelInstanceId={parseInt(levelInstanceId, 10)} />;
+
+		ModalComponent.show(modal, 'fpdi');
+	},
+
+	renderAggregate() {
+		if (this.state.aggregate) {
+			return (<AggregateIndicator
+				ref="agg-ind-config"
+				indicatorsList={this.state.model.data.indicatorList}
+				calculationType={this.state.model.data.calculation}
+				visualization={this.state.vizualization}
+				selfId={this.props.params.levelInstanceId} />);
+		}
+	},
+
+	renderBreadcrumb() {
+		return (
+			<div>
+				<span>
+					<Link className="fpdi-breadcrumb fpdi-breadcrumbDivisor"
+						to={'/plan/' + this.context.planMacro.attributes.id + '/details/'}
+						title={this.context.planMacro.attributes.name}>{this.context.planMacro.attributes.name.length > 15 ? this.context.planMacro.attributes.name.substring(0, 15) + "..." : this.context.planMacro.attributes.name.substring(0, 15)
+						}</Link>
+					<span className="mdi mdi-chevron-right fpdi-breadcrumbDivisor"></span>
+				</span>
+				<span>
+					<Link className="fpdi-breadcrumb fpdi-breadcrumbDivisor"
+						to={'/plan/' + this.context.planMacro.attributes.id + '/details/subplan/' + this.state.model.data.plan.id}
+						title={this.state.model.data.plan.name}>{this.state.model.data.plan.name.length > 15 ? this.state.model.data.plan.name.substring(0, 15) + "..." : this.state.model.data.plan.name.substring(0, 15)}</Link>
+					<span className="mdi mdi-chevron-right fpdi-breadcrumbDivisor"></span>
+				</span>
+				{this.state.model.data.parents.map((parent, idx) => {
+					return (
+						<span key={idx}>
+							<Link className="fpdi-breadcrumb fpdi-breadcrumbDivisor"
+								to={"/plan/" + this.context.planMacro.attributes.id + "/details/subplan/level/" + parent.id}
+								title={parent.name}>{parent.name.length > 15 ? parent.name.substring(0, 15) + "..." : parent.name.substring(0, 15)}</Link>
+							<span className="mdi mdi-chevron-right fpdi-breadcrumbDivisor"></span>
+						</span>
+					);
+				})}
+				<span className="fpdi-breadcrumb fpdi-selectedOnBreadcrumb">
+					{this.state.model.data.name.length > 15 ? this.state.model.data.name.substring(0, 15) + "..." : this.state.model.data.name.substring(0, 15)}
+				</span>
+			</div>
+		);
+	},
+
+	renderDisableEdit() {
+		const isGoal = this.state.model.data.level.goal;
+
+		return (
+			<ul className="dropdown-menu dropdown-menu-level-archived">
+				<li>
+					<a
+						className="mdi mdi-pencil disabledIcon"
+						title={Messages.get("label.title.UnableEditArchivedPlan")}>
+						<span id="menu-levels">
+							{Messages.getEditable("label.title.UnableEditArchivedPlan", "fpdi-nav-label")}
+						</span>
+					</a>
+				</li>
+
+				<li>
+					<a
+						className="mdi mdi-delete disabledIcon"
+						title={Messages.get("label.unableDeleteArchivedPlan")}
+						type="submit">
+						<span id="menu-levels">
+							{Messages.getEditable("label.unableDeleteArchivedPlan", "fpdi-nav-label")}
+						</span>
+					</a>
+				</li>
+
+				{
+					isGoal && (
+						<li>
+							<a onClick={this.openJustificationHistoryModal}>
+								<span className="mdi mdi-eye">
+									<span id="menu-levels">{Messages.get("label.justificationHistory")}</span>
+								</span>
+							</a>
+						</li>
+					)
+				}
+
+			</ul>
+		);
+	},
+
+	renderEditGoal(userResponsible) {
+		const { roles, permissions } = this.context;
+		
+		const hasPermission = this.context.roles.COLABORATOR ? 
+			hasEditStructureItemPermission(roles, permissions, this.isResponsibleForThis())
+			: this.hasPermission();
+				
+		const isGoal = this.state.model.data.level.goal;
+
+		return (
+			<ul id="level-menu" className="dropdown-menu" >
+				{(hasPermission && this.state.vizualization) ||
+					(userResponsible && userResponsible.id == (UserSession.get("user") ? UserSession.get("user").id : null) &&
+						this.state.model.data.level.goal) ? (
+						<li>
+							<a onClick={this.editingAttributes}>
+								<span className="mdi mdi-pencil cursorPointer cursorPointer" title={Messages.get("label.title.editInformation")}>
+									<span id="menu-levels"> {Messages.getEditable("label.title.editInformation", "fpdi-nav-label")} </span>
+								</span>
+							</a>
+
+						</li>) : ""}
+
+				{
+					isGoal && (
+						<li>
+							<a onClick={this.openJustificationHistoryModal}>
+								<span className="mdi mdi-eye">
+									<span id="menu-levels">{Messages.get("label.justificationHistory")}</span>
+								</span>
+							</a>
+						</li>
+					)
+				}
+
+				{this.hasPermissionToFinishGoalAndEditFields() && isGoal ? (
+						<li>
+							<a onClick={this.state.model.data.closed == false
+								? this.confirmCompleteGoal.bind(this, this.state.model.data.id, true)
+								: (this.hasPermissionToFinishGoalAndEditFields() ? this.confirmCompleteGoal.bind(this, this.state.model.data.id, false) : "")}>
+								<span className={this.state.model.data.closed == false ? "mdi mdi-lock-open-outline lockGoal-open deleteIcon" : "mdi  mdi-lock lockGoal-closedeleteIcon"}
+									title={this.state.model.data.closed == false ? Messages.get("label.title.finishGoal") : (hasPermission ? "Abrir Meta" : Messages.get("label.title.reopenGoal"))}>
+									<span id="menu-levels"> {this.state.model.data.closed == false ? Messages.get("label.msg.finishGoal") : Messages.get("label.msg.reopenGoal")} </span>
+								</span>
+							</a>
+						</li>) : ""}
+				{(this.context.roles.MANAGER || _.contains(this.context.permissions,
+					PermissionsTypes.MANAGE_PLAN_PERMISSION)) && this.state.vizualization ? (
+						<li>
+							<a onClick={this.exportLevelAttributes}>
+								<span className="mdi mdi-file-export cursorPointer" title={Messages.get("label.generateReport")}>
+									<span id="menu-levels"> {Messages.getEditable("label.generateReport", "fpdi-nav-label")} </span>
+								</span>
+							</a>
+						</li>) : ""}
+
+				{this.context.roles.SYSADMIN ? "" :
+					(this.state.favoriteExistent ? (
+						<li>
+							<a onClick={this.removeFavoriteLevel}>
+								<span className="mdi mdi-star-outline cursorPointer" title={Messages.get("label.removeFromFavorites")}>
+									<span id="menu-levels"> {Messages.getEditable("label.removeFromFavorites", "fpdi-nav-label")} </span>
+								</span>
+							</a>
+						</li>)
+						: (!this.state.favoriteTotal || this.state.favoriteTotal < 200 ?
+							<li>
+								<a onClick={this.saveFavoriteLevel}>
+									<span className="mdi mdi-star cursorPointer" title={Messages.get("label.addFavorites")}>
+										<span id="menu-levels"> {Messages.getEditable("label.addFavorites", "fpdi-nav-label")}  </span>
+									</span>
+								</a>
+							</li>
+							:
+							<li>
+								<a type="submit">
+									<span className="mdi mdi-star disabledIcon" title={Messages.get("label.maxFavorites")}>
+										<span id="menu-levels"> {Messages.getEditable("label.notAddFavorites", "fpdi-nav-label")} </span>
+									</span>
+								</a>
+							</li>
+						)
+					)
+				}
+
+				{this.hasPermissionToDelete() && this.state.vizualization ? (
+						(this.state.undeletable ?
+							<li>
+								<a onClick={this.deleteLevelAttribute} type="submit">
+									<span className="mdi mdi-delete cursorPointer" title={Messages.get("label.delete") + " " + this.state.subTitle}>
+										<span id="menu-levels"> {Messages.get("label.delete")}</span>
+									</span>
+								</a>
+							</li>
+							:
+							<li>
+								<a type="submit">
+									<span className="mdi mdi-delete disabledIcon marginLeft5 cursorPointer" title={Messages.get("label.notDeleted") + (!this.state.model.data.leaf ? ", possui níveis filhos" : "")}>
+										<span id="menu-levels"> {Messages.getEditable("label.notDeleted", "fpdi-nav-label")} </span>
+									</span>
+								</a>
+							</li>
+						)) : ""}
+			</ul>
+		);
+	},
+
+	renderClosedGoal() {
+		const hasPermission = this.hasPermission();
+
+		const isGoal = this.state.model.data.level.goal;
+
+		return (
+			<ul id="level-menu" className="dropdown-menu">
+				<li>
+					<a data-placement="top">
+						<span className="mdi mdi-pencil disabledIcon marginLeft5" title={Messages.get("label.title.notEditGoalComplete")}>
+							<span id="menu-levels"> {Messages.getEditable("label.notEdit", "fpdi-nav-label")} </span>
+						</span>
+					</a>
+				</li>
+
+				{
+					isGoal && (
+						<li>
+							<a onClick={this.openJustificationHistoryModal}>
+								<span className="mdi mdi-eye">
+									<span id="menu-levels">{Messages.get("label.justificationHistory")}</span>
+								</span>
+							</a>
+						</li>
+					)
+				}
+
+				{this.hasPermissionToFinishGoalAndEditFields() && isGoal ? (
+						<li>
+							<a onClick={this.state.model.data.closed == false
+								? this.confirmCompleteGoal.bind(this, this.state.model.data.id, true)
+								: (this.hasPermissionToFinishGoalAndEditFields() ? this.confirmCompleteGoal.bind(this, this.state.model.data.id, false) : "")}>
+								<span className={this.state.model.data.closed == false ? "mdi mdi-lock-open-outline lockGoal-open" : "mdi  mdi-lock lockGoal-close"}
+									title={this.state.model.data.closed == false ? Messages.get("label.title.finishGoal") : (hasPermission ? "Abrir Meta" : Messages.get("label.title.reopenGoal"))}>
+									<span id="menu-levels"> {this.state.model.data.closed == false ? Messages.getEditable("label.msg.finishGoal", "fpdi-nav-label") : Messages.getEditable("label.msg.reopenGoal", "fpdi-nav-label")} </span>
+								</span>
+							</a>
+						</li>) : ""}
+
+				{(this.context.roles.MANAGER || _.contains(this.context.permissions,
+					PermissionsTypes.MANAGE_PLAN_PERMISSION)) && this.state.vizualization ? (
+						<li>
+							<a onClick={this.exportLevelAttributes}>
+								<span className="mdi mdi-file-export cursorPointer" title={Messages.get("label.generateReport")}>
+									<span id="menu-levels"> {Messages.getEditable("label.generateReport", "fpdi-nav-label")}</span>
+								</span>
+							</a>
+						</li>) : ""}
+
+				{this.context.roles.SYSADMIN &&
+					(this.state.favoriteExistent ? (
+						<li>
+							<a onClick={this.removeFavoriteLevel}>
+								<span className="mdi mdi-star-outline cursorPointer" title={Messages.get("label.removeFromFavorites")}>
+									<span id="menu-levels"> {Messages.getEditable("label.removeFromFavorites", "fpdi-nav-label")} </span>
+								</span>
+							</a>
+						</li>)
+						: (!this.state.favoriteTotal || this.state.favoriteTotal < 200 ?
+							<li>
+								<a onClick={this.saveFavoriteLevel}>
+									<span className="mdi mdi-star cursorPointer" title={Messages.get("label.addFavorites")}>
+										<span id="menu-levels">	{Messages.getEditable("label.addFavorites", "fpdi-nav-label")} </span>
+									</span>
+								</a>
+							</li>
+							:
+							<li>
+								<a type="submit">
+									<span className="mdi mdi-star disabledIcon" title={Messages.get("label.maxFavorites")}>
+										<span id="menu-levels">	{Messages.getEditable("label.notAddFavorites", "fpdi-nav-label")} </span>
+									</span>
+								</a>
+							</li>
+						)
+					)
+				}
+
+				{this.state.undeletable ?
+					<li>
+						<a type="submit">
+							<span className="mdi mdi-delete disabledIcon marginLeft5" title={Messages.get("label.notDeleted") + " " + (!!this.state.model.data.closed ? ", meta concluída\n" : "")}>
+								<span id="menu-levels">	{Messages.getEditable("label.notDeleted", "fpdi-nav-label")} </span>
+							</span>
+						</a>
+					</li>
+					: ""}
+
+			</ul>
+		);
+
+	},
+
+	hasPermission() {
+		const { roles, permissions } = this.context;
+
+		return hasEditStructureItemPermission(roles, permissions, this.isResponsibleForThisOrSomeParent());
+	},
+
+	hasPermissionToDelete() {
+		const { roles, permissions } = this.context;
+		const isGoal = this.state.model.data.level.goal;
+
+		return hasAddAndDeletetructureItemPermission(roles, permissions, this.isResponsibleForThisOrSomeParent(), isGoal);
+	},
+
+	hasPermissionToFinishGoalAndEditFields() {
+		const { roles, permissions } = this.context;
+
+		return hasPermissionToFinishGoalAndEditFields(roles, permissions, this.isResponsibleForThisOrSomeParent());
+	},
+
+	isResponsibleForThis() {
+
+		const userId = UserSession.get("user").id;
+		const responsibleForThisLevel = this.getUserResponsible();
+		return (responsibleForThisLevel && responsibleForThisLevel.id == userId);
+	},
+
+	isResponsibleForThisOrSomeParent() {
+		const { model } = this.state;
+		const { parents } = model.data;
+
+		const userId = UserSession.get("user").id;
+		const responsibleForThisLevel = this.getUserResponsible();
+		const managerForThisLevel= this.getUserManager();
+		if ((responsibleForThisLevel && responsibleForThisLevel.id == userId)
+			|| (managerForThisLevel && managerForThisLevel.id == userId)) {
+			return true;
+		}
+
+		return isResponsibleForSomeParent(parents);
+	},
+
+	getUserResponsible() {
+		return this.getUserResponsibleByAttributeType(AttributeTypes.RESPONSIBLE_FIELD);
+	},
+
+	getUserManager() {
+		return this.getUserResponsibleByAttributeType(AttributeTypes.MANAGER_FIELD);
+	},
+
+	getUserResponsibleByAttributeType(attributeType) {
+		const { fields } = this.state;
+		for (var i = 0; i < fields.length; i++) {
+			if (fields[i].type == attributeType) {
+				const { users } = fields[i];
+				if (users) {
+					for (var j = 0; j < users.length; j++) {
+						if (users[j].id == fields[i].value) {
+							return users[j];
+						}
+					}
+				}
+			}
+		}
+
+		return null;
+	},
+
+	renderDisableDelete() {
+		return (
+			<ul id="level-menu" className="dropdown-menu">
+				<li>
+					<a>
+						<span className="mdi mdi-delete disabledIcon" title={Messages.get("label.unableDeleteArchivedPlan")}>
+							<span id="menu-levels">	{Messages.getEditable("label.unableDeleteArchivedPlan", "fpdi-nav-label")} </span>
+						</span>
+					</a>
+				</li>
+			</ul>
+		);
+	},
+
+	renderDeleteLevelAttributeEnable() {
+		return (
+			<ul id="level-menu" className="dropdown-menu">
+				<li>
+					<a onClick={this.deleteLevelAttribute}>
+						<span className="mdi mdi-delete cursorPointer deleteIcon" title={Messages.get("label.delete")}>
+							<span id="menu-levels">	{Messages.getEditable("label.delete", "fpdi-nav-label")} </span>
+						</span>
+					</a>
+				</li>
+			</ul>
+		);
+
+	},
+	handleUpdate () {
+		this.forceUpdate();	
+
+	},
+	renderDeleteLevelAttributeDisable() {
+		return (
+			<ul id="level-menu" className="dropdown-menu">
+				<li>
+					<a onClick={this.deleteLevelAttribute}>
+						<span className="mdi mdi-delete disabledIcon marginLeft5" title={Messages.get("label.notDeleted") + (!!this.state.model.data.closed ? ", meta concluída\n" : "")}>
+							<span id="menu-levels">	{Messages.getEditable("label.notDeleted", "fpdi-nav-label")} </span>
+						</span>
+					</a>
+				</li>
+			</ul>
+		);
+	},
+
+	render() {
+		if (this.state.loading) {
+			return <LoadingGauge />;
+		}
+		var userResponsible = this.getUserResponsible();
+		var userManager = this.getUserManager();
+
+		return (
+			<div>
+				<div className="row paddingLeft15">
+					{this.state.model ? this.renderBreadcrumb() : ""}
+
+					<div className={this.state.level == "Indicador" ? "col-lg-10 fpdi-indicatorTitle" : "col-lg-10 fpdi-attributesTitle"}>
+						<h1>
+							<div className="fpdi-containerTitle" ref='levelInstanceTitle'>
+								{this.state.subTitle}
+							</div>
+							{this.state.vizualization ?
+								<div className="fpdi-containerIcons">
+									<span className="dropdown">
+										<a
+											className="dropdown-toggle"
+											data-toggle="dropdown"
+											aria-haspopup="true"
+											aria-expanded="true"
+											title={Messages.get("label.actions")}
+										>
+											<span className="sr-only">{Messages.getEditable("label.actions", "fpdi-nav-label")}</span>
+											<span className="mdi mdi-chevron-down" />
+										</a>
+										{this.context.planMacro.attributes.archived ? this.renderDisableEdit() :
+											(this.state.model.data.level.goal == false ? this.renderEditGoal(userResponsible) :
+												this.state.model.data.closed == false ? this.renderEditGoal(userResponsible) : this.renderClosedGoal())
+										}
+									</span>
+								</div> : ""}
+						</h1>
+						{this.state.level != "Indicador" ?
+							<div>
+								<span className="fpdi-level-type-value">
+									{this.state.level}
+								</span>
+							</div>
+							:
+							this.state.aggregate ?
+								<div>
+									<span className="fpdi-level-type-value">
+										{Messages.getEditable("label.indicatorAggregate", "fpdi-nav-label")}
+									</span>
+								</div>
+								:
+								<div>
+									<span className="fpdi-level-type-value">
+										{Messages.getEditable("label.indicatorSimple", "fpdi-nav-label")}
+									</span>
+								</div>
+						}
+					</div>
+					<div className="fpdi-levelValueBox">
+						<div className={this.state.levelValue == null || this.state.levelValue < 1000 ? "col-lg-1 box-proceeds" : "col-lg-1"} >
+							<span id="title-proceeds"> {Messages.getEditable("label.profit", "fpdi-nav-label")} </span>
+							<span id="value-proceeds"> {this.state.levelValue == null ? 0 + "%" : this.state.levelValue.toFixed(2) + "%"} </span>
+						</div>
+					</div>
+				</div>
+
+				<VerticalForm
+					ref="levelForm"
+					vizualization={this.state.vizualization}
+					isPlan={true}
+					onCancel={this.onCancel}
+					onSubmit={this.onSubmit}
+					fields={this.state.fields}
+					store={StructureStore}
+					onChange={this.onChange}
+					submitLabel="Salvar"
+					dataIniPlan={parseInt(this.state.model.data.plan.begin.substring(6,10))}
+					dataFimPlan={parseInt(this.state.model.data.plan.end.substring(6,10))}
+					dateBegin={dateBegin}
+					dateEnd={dateEnd}
+					userResponsible={userResponsible}
+					userManager={userManager}
+					levelInstanceId={this.state.model.data.id}
+					levelInstanceIdActionPlan={this.props.params.levelInstanceId} 
+					hasPermission={this.hasPermissionToFinishGoalAndEditFields()} />
+
+				{this.state.showPolarityAlert ? <i><h5 className="fpdi-indicator-weigth-total">{Messages.getEditable("label.msg.polarityChanged")}</h5></i> : ""}
+				{this.state.model.data.level.indicator ? <GoalPerformance indicator={this.state.model.data} /> : ""}
+
+				<LevelSons
+					dateBegin={dateBegin}
+					dateEnd={dateEnd}
+					parentId={this.state.model.data.id}
+					isParent={this.isParent}
+					users={this.state.users}
+					enabled={!this.state.aggregate && this.state.vizualization}
+					forceUp={this.handleUpdate}
+					hasPermission={this.hasPermissionToFinishGoalAndEditFields()}
+				/>
+			</div>);
+	}
+});

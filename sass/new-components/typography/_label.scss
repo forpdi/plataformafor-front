@@ -1,0 +1,23 @@
+.label {
+  display: inline-block;
+  font-size: 14px;
+  font-weight: normal;
+  margin: 0;
+  padding: 0;
+  text-transform: uppercase;
+  text-align: justify;
+  text-justify: distribute;
+}
+
+.label-vertical {
+  margin-bottom: 17px;
+  white-space: normal;
+  word-break: break-word;
+}
+
+.required-field {
+  font-size: .7rem;
+  position: relative;
+  margin-left: 2px;
+  top: -3px;
+}

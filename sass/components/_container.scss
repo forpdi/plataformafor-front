@@ -1,0 +1,787 @@
+#main-body {
+	margin: 0;
+  padding: 0;
+  width: 100%;
+}
+
+/*
+ * DEPRECATED
+ * To use this container set the 'main' tag class on 'AppSetup.jsx' to .fpdi-app-container.
+ */
+.fpdi-app-container {
+  position: absolute;
+  @include flexbox;
+  @include flex-dir(row);
+	z-index: 1;
+	top: 0px;
+	bottom: 0px;
+	right: 0px;
+	left: 0px;
+	margin: 0px;
+	padding: 0px;
+	overflow: hidden;
+}
+
+
+
+.app-body {
+  overflow-y: hidden;
+  overflow-x: hidden;
+  @include flexbox;
+  @include flex-dir(row);
+  @include flex(1);
+  height: 100%;
+  width: 100%;
+  .app-content {
+    width: 100%;
+    max-width: 100%;
+    overflow-y: auto;
+    @include flex(7);
+    padding-top: 10px;
+    padding-bottom: 30px;
+  }
+}
+
+
+.fpdi-app-sidebar-sm {
+  overflow-y: hidden;
+  overflow-x: hidden;
+  @include flexbox;
+  @include flex-dir(column);
+	height: 100%;
+  min-width: 50px;
+  width: 50px;
+  max-width: 50px;
+  padding: 0px;
+  font-size: 25px;
+  text-align: center;
+  background-color: #000;
+  color: #FFF;
+  > span, > a {
+  	display: block;
+  	height: 50px;
+  	width: 50px;
+  	line-height: 50px;
+  	margin: 0px auto;
+  	cursor: pointer;
+  	&:hover {
+  		background-color: #FFF;
+  		color: #000;
+  	}
+  }
+}
+
+.fpdi-app-sidebar {
+  overflow-y: auto;
+  overflow-x: hidden;
+  @include flexbox;
+  @include flex-dir(column);
+  @include flex(2);
+  border: none;
+  font-size: 13px;
+  font-weight: 600;
+  color: #FFFFFF;
+  background-color: $fpdi-primary;
+
+  & > * {
+    background-color: inherit;
+  }
+
+}
+
+.fpdi-sidebar {
+  max-width: 220px;
+  overflow-y: auto;
+  overflow-x: hidden;
+  display: flex;
+  -moz-flex-direction: column;
+  flex-direction: column;
+  -moz-flex: 2;
+  flex: 2;
+  font-size: 11px;
+  font-weight: 400;
+
+  & > span {
+      margin-top: auto;
+  }
+}
+
+.fpdi-nav-divider {
+  min-height: 1px;
+  margin: 0;
+  padding: 0;
+  background-color: $fpdi-primary;
+  border-bottom-width: 3px;
+  border-bottom-style: solid;
+}
+
+.fpdi-nav-wrap {
+  padding-right: 15px;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.fpdi-tab-nav {
+  display: flex;
+  margin: 0px;
+  height: 50px;
+  justify-content: center;
+  flex-direction: column;
+  border-bottom-width: 2px;
+  border-bottom-style: solid;
+
+  & > a {
+      list-style: none;
+      cursor: pointer;
+      display: flex;
+      flex-direction: row;
+      align-items: center;
+      height: 50px;
+      
+      &:hover, &:active, &:focus {
+        background-color: $fpdi-primary;
+        color: $fpdi-secondary;
+        transition: $hover-transition-time;
+      }
+      
+      & > span {
+          display: flex;
+          font-size: 11px;
+          text-transform: uppercase;
+
+          &:first-child {
+            padding-left: 15px;
+          }
+      }
+  } 
+}
+
+.fpdi-topbar {
+  max-width: 100%;
+  display: block;
+  border-bottom-width: 2px;
+  border-bottom-style: solid;
+
+  & > img {
+      padding: 10px 30px 10px 20px;
+      max-width: 100%;
+  }
+}
+
+.fpdi-app-sidebar {
+  max-width: 270px;
+  @media (max-width: 900px) {
+    max-width: 55px;
+    & .fpdi-nav-label {
+      display: none;
+    }
+    & .fpdi-nav-hide-btn {
+      display: none !important;
+    }
+    & .version {
+      display: none;
+    }
+  }
+}
+
+.version {
+  margin: 10px 0px 10px 15px;
+  flex-direction: column-reverse;
+}
+
+
+.fpdi-top-bar {
+  background-color: #FFF;
+  color: $fpdi-primary;
+  height: 70px;
+  margin: 0px;
+  padding: 10px 20px;
+  @include flexbox;
+  @include flex-dir(row);
+  align-items: center;
+  justify-content: center;
+  border-bottom: 1px solid #CCC;
+
+  & .mdi {
+    font-size: 24px;
+    vertical-align: middle;
+    &::before {
+      font-size: 24px;
+    }
+  }
+  & > a, .dropdown-toggle {
+    background-color: transparent;
+    color: $fpdi-primary;
+    margin: auto;
+    &:hover {
+      color: $fpdi-hover-1;
+      transition: color 0.3s;
+    }
+  }
+  & > * {
+    vertical-align: middle;
+  }
+  & > *:not(:last-child) {
+    margin-right: 25px;
+  }
+
+  & .fpdi-top-bar-brand {
+    width: 220px;
+    overflow-x: hidden;
+    border: none;
+    margin: 0px;
+    padding: 0px;
+    background-color: transparent;
+
+    @media (max-width: 640px) {
+      display: none;
+    }
+
+    > img {
+      height: 50px;
+      display: block;
+      margin: 0 auto;
+    }
+  }
+
+  & .redirect-to-forRisco-button{
+    background-color: transparent;
+    border-style: solid;
+    border-width: 1px;
+    border-radius: 3px;
+    border-color: #7d45d8;
+    color: #7d45d8;
+    padding: 6px 10px;
+    
+    &:hover {
+      background-color: #7d45d8;
+      color: #fff;
+      transition: background-color 0.4s, color 0.2s;
+    }
+  }
+
+  & .redirect-to-forPDI-button{
+    background-color: transparent;
+    border-style: solid;
+    border-width: 1px;
+    border-radius: 3px;
+    border-color: #0a3f61;
+    color: #0a3f61;
+    padding: 6px 16px;
+    
+    &:hover {
+      background-color: #0a3f61;
+      color: #fff;
+      transition: background-color 0.4s, color 0.2s;
+    }
+  }
+}
+
+.forrisco-top-bar {
+  & > a, .dropdown-toggle {
+    color: #7d45d8;
+    &:hover {
+      color: $brand-secondary;
+      transition-property: color;
+      transition-duration: 0.3s;
+    }
+  }
+  .forrisco-link-information {
+    color: $brand-secondary;
+    &:hover {
+      color: #4c2192;
+    }
+  }
+}
+
+.fpdi-fill {
+  @include flex(1);
+}
+
+.form-control{
+  height: auto;
+}
+
+.planStructures {
+  display: flex;
+  flex-wrap: wrap;
+}
+
+.planStructures > [class*='col-'] {
+  display: flex;
+
+  @media (max-width:770px) {
+    width: 100%;
+  }
+}
+
+.fpdi-card-full{
+  word-wrap: break-word;
+}
+
+.fdpi-table-container{
+  border: 1px solid #CCC;
+  width: 100%;
+  margin-bottom: 0px;
+  border-radius: 25px;
+}
+
+.fdpi-table-header{
+  border-bottom: 1px solid #CCC;
+  padding: 10px;
+}
+
+.fdpi-table-cell{
+  padding: 10px;
+}
+
+.fdpi-table-cell-center{
+  text-align: center;
+}
+
+.fpdi-duplicate-plan{
+  padding: 10px;
+}
+
+.fpdi-duplicate-checkbox-label{
+  font-size: 12px;
+  font-weight: normal;
+  margin-left: 5px;
+}
+
+.fpdi-indicator-type-ctn {
+  margin-top: 10px;
+  margin-left: -18px;
+}
+
+.fpdi-indicator-type-label {
+  margin-left: -1.5rem;
+  margin-right: 22px;
+  font-weight: 100;
+  font-size: small;
+}
+
+.fpdi-indicator-type-value {
+  color: #9E9E9F;
+  font-style: italic;
+  display: none;
+}
+
+.fpdi-indicators-ctn {
+  height: 230px !important;
+  overflow-y: auto;
+  word-break: break-all;
+  word-wrap: break-word;
+}
+
+.fpdi-indicators {
+  margin-top: 20px;
+  margin-bottom: 20px;
+}
+
+.fpdi-indicator-item {
+  padding: 6px 0px 6px 0px;
+  font-size: 15px;
+  color: #B4B4B4;
+  cursor: pointer;
+  & > span {
+    font-family: "Open Sans", "Helvetica Neue", Helvetica, Arial, sans-serif;;
+  }
+}
+
+.fpdi-indicator-item:hover {
+  color: $fpdi-hover-2;
+}
+
+.fpdi-indicator-item-selected {
+  padding: 6px 0px 6px 0px;
+  font-size: 15px;
+  color: $fpdi-hover-2;
+  cursor: pointer;
+  & > span {
+    font-family: "Open Sans", "Helvetica Neue", Helvetica, Arial, sans-serif;;
+  }
+}
+
+.fpdi-indicator-remove {
+  color: #666;
+  font-weight: bold;
+  float: right;
+  margin-right: 10px;
+  cursor: pointer;
+}
+
+.fpdi-indicator-weigth-total {
+  color: red;
+  font-weight: bold;
+}
+
+.fpdi-alert-message-text {
+  font-weight: bold;
+  font-size: 0.8em;
+  font-style: italic;
+}
+
+.fpdi-indicator-weigth-total-text{
+  width: 170px;
+  font-size: 12px;
+  color: red;
+  text-align: right;
+  font-weight: bold;
+}
+
+.fpdi-level-type-value {
+  color: #9E9E9F;
+  font-style: italic;
+  margin-bottom: 20px;
+  width: 100%;
+}
+
+.fpdi-archived-label {
+  font-style: italic;
+  margin-bottom: 20px;
+  width: 100%;
+}
+
+.fpdi-marginTop20 {
+  margin-top: 20px;
+}
+
+.fpdi-breadcrumb {
+  font-family: "Open Sans", "Helvetica Neue", Helvetica, Arial, sans-serif;;
+  font-size: 12px;
+  vertical-align: middle;
+}
+
+.fpdi-selectedOnBreadcrumb {
+  color: #B2B2B2;
+}
+
+.fpdi-breadcrumbDivisor {
+  vertical-align: middle;
+  color: #0085D8;
+}
+
+.fpdi-levelValueBox {
+  float: right;
+  margin-right: 15px;
+  background:$fpdi-primary;
+  max-width: 100px !important;
+  height: 50px;
+}
+
+.fpdi-containerTitle {
+  float: left;
+  word-break: break-word;
+}
+
+
+.fpdi-notifications-number {
+  position: relative;
+  background: #FF5B5B;
+  border-radius: 50%;
+  font-size: 8px;
+  color: #FFF !important;
+  padding: 2px;
+  float: right;
+  margin-left: -10px;
+  z-index: 10;
+  cursor: pointer;
+}
+
+.fpdi-notifications {
+  position: relative;
+  z-index: 5;
+  cursor: pointer;
+  border: none;
+}
+
+.fpdi-noNotifications {
+  padding: 10px;
+  font-size: 12px;
+}
+
+.fpdi-userPicture {
+  border-radius: 50%;
+  width: 30px;
+  height: 30px;
+  margin-right: 5px;
+}
+
+
+
+
+
+
+.forrisco-app-sidebar, .forrisco-app-sidebar-hidden {
+	overflow-y: auto;
+	overflow-x: hidden;
+	@include flexbox;
+	@include flex-dir(column);
+	@include flex(2);
+	border: none;
+	font-size: 13px;
+	font-weight: 600;
+	color: #FFFFFF;
+	background-color: $fpdi-primary;
+
+	& > * {
+	  background-color: inherit;
+	}
+
+  }
+
+  .forrisco-app-sidebar-hidden {
+	max-width: 70px;
+	& .fpdi-nav-label {
+	  display: none;
+	}
+  & .version {
+    display: none;
+  }
+  }
+
+.forrisco-app-sidebar {
+	max-width: 270px;
+}
+
+.forrisco-app-sidebar, .forrisco-app-sidebar-hidden {
+	overflow-y: auto;
+	overflow-x: hidden;
+	/*@include flexbox;*/
+	-moz-flex-direction: column;
+	flex-direction: column;
+	-moz-flex: 2;
+	flex: 2;
+	border: none;
+	font-size: 13px;
+	font-weight: 600;
+	color: #FFFFFF;
+	background-color: $brand-secondary;
+}
+
+.form-control-h {
+	width: 250px;
+	height: 25px;
+}
+
+
+.form-control-h::-webkit-input-placeholder {
+	color: #ccc;
+	font-size: 10px;}
+
+
+
+
+/* Medium devices (landscape tablets, 768px and up)*/
+@media only screen and (min-width: 0px) {
+	.Cor{
+		width: 4vmax;
+    	height: 3vh;
+	}
+}
+/* Medium devices (landscape tablets, 768px and up)*/
+@media only screen and (min-width: 600px) {
+	.Cor{
+		width: 6vmax;
+    	height: 5vh;
+	}
+}
+
+/* Medium devices (landscape tablets, 768px and up)*/
+@media only screen and (min-width: 750px) {
+	.Cor{
+		width: 7vmax;
+    	height: 5vh;
+	}
+}
+
+/* Medium devices (landscape tablets, 768px and up)*/
+@media only screen and (min-width: 820px) {
+	.Cor{
+		width: 8vmax;
+    	height: 5vh;
+	}
+}
+
+/* Large devices (laptops/desktops, 992px and up) */
+@media only screen and (min-width: 991px) {
+	.Cor{
+		width: 9vmax;
+    	height: 5vh;
+	}
+}
+
+
+/* Large devices (laptops/desktops, 992px and up) */
+@media only screen and (min-width: 992px) {
+	.Cor{
+		width: 4vmax;
+		height: 5vh;
+		//padding: 10px;
+	}
+}
+
+/* Large devices (laptops/desktops, 992px and up) */
+@media only screen and (min-width: 1150px) {
+	.Cor{
+		width: 4vmax;
+		height: 5vh;
+		padding: 10px;
+	}
+}
+
+/* Extra large devices (large laptops and desktops, 1200px and up) */
+@media only screen and (min-width: 1350px) {
+	.Cor{
+		width: 5vmax;
+    	height: 5vh;
+	}
+}
+
+/* Extra large devices (large laptops and desktops, 1200px and up) */
+@media only screen and (min-width: 1700px) {
+	.Cor{
+		width: 6vmax;
+    	height: 5vh;
+	}
+}
+
+
+.Cor{
+  width: 9rem;
+  height: 4rem;
+  border: .12px solid #ddd;
+  text-align: center;
+  display: inline-flex;
+  align-items: center;
+  vertical-align: middle;
+  justify-content: center;
+
+	&.dashboard{
+    width: 100%;
+		height: 15%;
+		white-space: nowrap;
+		display: flex;
+	}
+}
+
+.Cinza {
+	background-color: #ddd;
+}
+
+.CinzaMatriz {
+  background-color: #F3F2F3;
+}
+.Quadro{
+	height: 77px;
+    width: 187px;
+}
+
+.Vermelho {
+  background-color: #F1705F;
+	//color: white;
+}
+
+.Marron {
+  background-color: #E8A68E;
+	//color: white;
+}
+
+.Amarelo {
+	background-color: #FDFFC2;
+}
+
+.Laranja {
+	background-color: #ffd19b;
+	//color: white;
+}
+.Verde {
+	background-color: #CAE5C3;
+	//color: white;
+}
+.Azul {
+	background-color: #A5CDE8;
+	//color: white;
+}
+
+.vertical-text {
+	transform: rotate(270deg);
+
+	&.dashboard {
+		margin-left: 10px;
+		right: 50px;
+		position: relative;
+		font-weight: bold;
+		padding-left: 10px;
+	}
+}
+
+.matrixSelect {
+	width: auto;
+    font-size: 12px !important;
+    left: 10px;
+    bottom: 8px;
+    position: relative;
+	margin: 10px;
+
+	&.frisco-impact{
+		bottom: 16px;
+		padding: 0px;
+	}
+}
+
+.frisco-probability{
+	width: 150px;
+    font-size: 12px !important;
+    position: relative;
+}
+
+
+.frisco-containerSelect {
+	float: right;
+	bottom: 7px;
+    position: relative
+}
+
+.frisco-containerOptions {
+	font-size: 13px;
+	padding: 15px 10px 0 10px;
+}
+
+.frisco-containerOptions span {
+	//color: darken($brand-secondary, 20%);
+	color: #7d45d8;
+    margin: 0 10px;
+    cursor: pointer;
+	font-weight: 700;
+	font-size: 16px;
+}
+
+.frisco-containerOptions span.active {
+	border-bottom: solid 2px #7d45d8;
+}
+
+
+.frisco-link {
+	margin: 40px 50px 40px 0;
+	font-size: 16px;
+	color: #9E9E9F;
+	text-decoration: none;
+	font-weight: bold;
+	&.selecionado {
+		border-bottom: solid 2px #7d45d8;
+		color: #7d45d8;
+	}
+}
+
+.redirect-to-forPDI-button{
+  background-color: transparent;
+  color: #0a3f61;
+  
+  &:hover {
+    background-color: #0a3f61;
+    color: #fff;
+  }
+}

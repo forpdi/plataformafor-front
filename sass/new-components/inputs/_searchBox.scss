@@ -1,0 +1,36 @@
+.search-box {
+  display: flex;
+  align-items: center;
+  min-width: 150px;
+  width: 20%;
+  align-self: flex-start;
+}
+
+.search-box-lists {
+  min-width: 35%;
+  margin: 0 0 24px 0;
+
+  .search-box-submit-button {
+    margin: -35px -35px -12px;
+  }
+
+  .search-box-clear-button {
+    margin: -25px -25px -3px;
+  }
+}
+
+.search-box-submit-button {
+  margin: -35px;
+}
+
+.search-box-clear-button {
+  margin: -25px;
+}
+
+.advanced-search-box {
+  display: flex;
+  align-self: flex-start;
+  align-items: end;
+  width: 67%;
+  margin: 10px 0;
+}
