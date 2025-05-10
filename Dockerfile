@@ -1,19 +1,18 @@
-FROM node:10-stretch as build
+FROM node:14-stretch as build
 
-RUN npm i --force -g node-gyp npm@latest
-
-RUN mkdir /usr/app
 WORKDIR /usr/app
+
+COPY package*.json .
+
+RUN npm install
 
 COPY . .
 
-RUN NODE_ENV=development yarn --frozen-lockfile
-RUN NODE_ENV=production yarn build:docker
-
+RUN npm run build
 
 FROM httpd:alpine
 
-COPY --from=build /usr/app/dist/ /usr/local/apache2/htdocs/
+COPY --from=build /usr/app/build/ $HTTPD_PREFIX/htdocs/
 COPY ./conf/apache-forpdi.conf $HTTPD_PREFIX/conf/extra/forpdi.conf
 COPY ./conf/apache-httpd.conf $HTTPD_PREFIX/conf/httpd.conf
 

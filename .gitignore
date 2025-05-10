@@ -6,3 +6,4 @@ node_modules/
 .vscode/
 .tool-versions
 yarn.lock
+.env.production
