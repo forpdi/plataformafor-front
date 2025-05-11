@@ -182,6 +182,10 @@ export default React.createClass({
 	},
 
 	render() {
+    if (!EnvInfo.company) {
+      return <h3 className="marginLeft30">{Messages.get('label.noCompanyRegistered')}</h3>;
+    }
+
 		return (
 			<div className="dashboard-container">
 				<h1 className="marginLeft30">{Messages.getEditable("label.dashboard", "fpdi-nav-label")}</h1>

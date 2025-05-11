@@ -35,30 +35,34 @@ class ForriscoApplication extends React.Component {
             to="/forrisco/home"
             location={location}
           />
-          <MainMenu.MenuItem
-            label="Políticas"
-            icon="file-signature"
-            to="/forrisco/policy"
-            location={location}
-          />
-          <MainMenu.MenuItem
-            label="Planos de gestão de risco"
-            icon="list"
-            to="/forrisco/plan-risk"
-            location={location}
-          />
-          <MainMenu.MenuItem
-            label="Unidades"
-            icon="map-marker-alt"
-            to="/forrisco/unit"
-            location={location}
-          />
-          <MainMenu.MenuItem
-            label="Relatórios"
-            icon="download"
-            to="/forrisco/reports"
-            location={location}
-          />
+          {
+            EnvInfo.company && [
+              <MainMenu.MenuItem
+                label="Políticas"
+                icon="file-signature"
+                to="/forrisco/policy"
+                location={location}
+              />,
+              <MainMenu.MenuItem
+                label="Planos de gestão de risco"
+                icon="list"
+                to="/forrisco/plan-risk"
+                location={location}
+              />,
+              <MainMenu.MenuItem
+                label="Unidades"
+                icon="map-marker-alt"
+                to="/forrisco/unit"
+                location={location}
+              />,
+              <MainMenu.MenuItem
+                label="Relatórios"
+                icon="download"
+                to="/forrisco/reports"
+                location={location}
+              />,
+            ]
+          }
         </MainMenu>
         <AppContainer>
           <Helmet>

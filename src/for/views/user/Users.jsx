@@ -55,6 +55,9 @@ export default React.createClass({
 	},
 
 	componentDidMount() {
+    if (!EnvInfo.company) {
+      return;
+    }
 		var me = this;
 		/* Comentado pois interferia no acesso ao perfil do próprio usuário por outros níveis de conta,
 		 * remover o código caso não for essencial para outras funcionalidades
@@ -1880,6 +1883,9 @@ export default React.createClass({
 	},
 
 	render() {
+    if (!EnvInfo.company) {
+      return <h3 className="marginLeft30">{Messages.get('label.noCompanyRegistered')}</h3>;
+    }
 		return (
 			<AppContainer.ScrollableContent>
 				<div className="fpdi-profile-user padding40">

@@ -242,19 +242,25 @@ export default React.createClass({
 							<b> {Messages.getEditable("label.communityDescriptionBold","fpdi-nav-label")} </b>
 							{Messages.getEditable("label.communityDescription","fpdi-nav-label")}
 						</p>
-						<b>Acessar comunidade</b>
-					<div className="fpdi-community-access" style={{ display: 'flex', marginTop: '10px' }}>
-						<Link to="/comunidade/forpdi">
-							<button className="fpdi-community-button">
-								<img src={LogoFPDI} alt="ForPDI" className="for-community-logo"/>
-							</button>
-						</Link>
-						<Link to="/comunidade/forrisco">
-							<button className="forrisco-community-button">
-								<img src={LogoFRISCO} alt="ForRisco" className="for-community-logo"/>
-							</button>
-						</Link>
-					</div>
+            {
+              EnvInfo.company ? (
+                <div>
+                  <b>Acessar comunidade</b>
+                  <div className="fpdi-community-access" style={{ display: 'flex', marginTop: '10px' }}>
+                    <Link to="/comunidade/forpdi">
+                        <img src={LogoFPDI} alt="ForPDI" className="for-community-logo"/>
+                      <button className="fpdi-community-button">
+                      </button>
+                    </Link>
+                    <Link to="/comunidade/forrisco">
+                      <button className="forrisco-community-button">
+                        <img src={LogoFRISCO} alt="ForRisco" className="for-community-logo"/>
+                      </button>
+                    </Link>
+                  </div>
+                </div>
+              ) : <p className="fpdi-community-access">Cadastre uma instituição no sistema para acessar a comunidade.</p>
+            }
 						<img
 							className="fpdi-login-community-image"
 							style={{ marginTop: '15px'}}

@@ -30,6 +30,10 @@ class UserNotifications extends React.Component {
   }
 
   componentDidMount() {
+    if (!EnvInfo.company) {
+      this.setState({ notifications: [] });
+      return;
+    }
     const { page, pageSize, sortedBy } = this.state;
 
     UserSession.on('retrieve-showMoreNotifications', (response) => {

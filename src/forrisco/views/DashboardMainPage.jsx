@@ -52,6 +52,10 @@ class DashboardMainPage extends React.Component {
   }
 
   componentDidMount() {
+    if (!EnvInfo.company) {
+      return;
+    }
+
     PlanRiskStore.on('list-to-select', ({ data }) => {
       const { list } = data;
       const firstPlanRisk = list && list.length > 0 && list[0];
@@ -60,7 +64,11 @@ class DashboardMainPage extends React.Component {
         planRisks: list,
         selectedPlanRiskId,
       });
-      selectedPlanRiskId && this.listUnitsAndRisks(selectedPlanRiskId);
+      if (selectedPlanRiskId) {
+        this.listUnitsAndRisks(selectedPlanRiskId);
+      } else {
+        this.setState({ units: [] });
+      }
     }, this);
 
     UnitStore.on('listToSelect', ({ data }) => {
@@ -485,6 +493,12 @@ class DashboardMainPage extends React.Component {
   }
 
   render() {
+    if (!EnvInfo.company) {
+      return (
+        <MainTitle style={{ margin: '30px' }} label={Messages.get('label.noCompanyRegistered')} />
+      );
+    }
+
     const { planRisks, units } = this.state;
 
     if (!planRisks || !units) {
