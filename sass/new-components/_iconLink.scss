@@ -1,0 +1,8 @@
+.icon-link {
+  @extend .icon-button;
+
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  outline: none !important;
+}

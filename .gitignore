@@ -1,0 +1,8 @@
+build/development/
+build/
+dist/
+node_modules/
+.idea/
+.vscode/
+.tool-versions
+yarn.lock

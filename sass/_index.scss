@@ -1,0 +1,100 @@
+// ==========================================================================
+// ARQUIVO MESTRE DE ESTILOS (SASS/_INDEX.SCSS)
+// ==========================================================================
+
+// --------------------------------------------------------------------------
+// 1. VARIÁVEIS E BOOTSTRAP 5
+// --------------------------------------------------------------------------
+
+// Carrega o adaptador de variáveis (Cores, Fontes 14px, Mapeamento BS3->BS5)
+// Este arquivo deve estar na raiz da pasta sass (sass/_variables-adapter.scss)
+@import "./variables-adapter";
+
+// Carrega o Bootstrap 5
+// Nota: Usamos o til (~) para pegar do node_modules, que é o padrão mais seguro.
+// Se quiser usar a pasta local que aparece na sua árvore, seria "bootstrap5/bootstrap",
+// mas recomendo via node_modules para garantir a versão do package.json.
+@import "~bootstrap/scss/bootstrap";
+
+
+// --------------------------------------------------------------------------
+// 2. RESTAURAÇÃO DE COMPONENTES LEGADOS
+// --------------------------------------------------------------------------
+
+// Carrega o arquivo que criamos na pasta dependencies.
+// Ele restaura: .panel, .btn-default, .label, .pull-right e o Grid .col-xs-*
+@import "dependencies/legacy-components";
+
+
+// --------------------------------------------------------------------------
+// 3. CORE DO SISTEMA
+// --------------------------------------------------------------------------
+
+@import "dependencies/mixins";
+@import "dependencies/variables"; // Necessário para cores utilitárias ($color-*)
+@import "dependencies/scaffolding";
+
+// Themes
+@import "themes/themes";
+
+
+// --------------------------------------------------------------------------
+// 4. COMPONENTES
+// --------------------------------------------------------------------------
+
+@import "components/action";
+@import "components/breadcrumb";
+@import "components/button";
+@import "components/card";
+@import "components/container";
+@import "components/chart";
+@import "components/dashboard";
+@import "components/dropdown";
+@import "components/editabledataview";
+@import "components/emptystate";
+@import "components/error";
+@import "components/form";
+@import "components/gadgetnav";
+@import "components/general";
+@import "components/marked";
+
+// O CSS do Modal antigo DEVE ficar comentado, pois agora usamos o Modal do React-Bootstrap
+// @import "components/modal";
+
+@import "components/navbar";
+@import "components/popover";
+@import "components/progressbar";
+@import "components/search";
+@import "components/tab";
+@import "components/table";
+@import "components/toast";
+@import "components/toolbar";
+@import "components/richtext";
+@import "components/user";
+@import "components/generaltable";
+
+
+// --------------------------------------------------------------------------
+// 5. UTILITÁRIOS E VIEWS
+// --------------------------------------------------------------------------
+
+// Text
+@import "utility/text";
+
+// Views Layouts
+@import "components/login";
+@import "components/plan";
+@import "components/treeview";
+@import "components/fields";
+@import "components/levelsearch";
+@import "components/summarytable";
+
+// Libs Externas
+@import "quill/quill.snow";
+@import "quill/quill.core";
+@import "quill/quill.bubble";
+
+@import "reactCollapse";
+
+// New components
+@import "new-components/components";

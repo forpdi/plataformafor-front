@@ -1,0 +1,8 @@
+.modal-layout {
+    display: flex;
+    justify-content: center;
+    min-width: 600px;
+    transform: translateX(-100px); //foi adicionado para compensar a mudança de tamanho
+    padding: 0px 10px;
+    border-radius: 10px;
+}

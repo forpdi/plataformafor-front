@@ -1,0 +1,14 @@
+.ReactCollapse--collapse {
+  transition: height 500ms;
+
+  // Garante que o conteúdo seja visível quando o collapse estiver aberto
+  &[style*="height: auto"] {
+    overflow: visible !important;
+  }
+}
+
+.ReactCollapse--content {
+  // Garante que o conteúdo interno mantenha o fluxo correto
+  display: flex;
+  flex-direction: column;
+}

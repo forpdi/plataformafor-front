@@ -1,0 +1,177 @@
+// =========================================================
+// COMPATIBILIDADE VISUAL ESTRITA (BS3 -> BS5) - PIXEL PERFECT
+// =========================================================
+
+// ---------------------------------------------------------
+// 1. Painéis / Cards (O "Box" de Login)
+// ---------------------------------------------------------
+
+// O card original tem uma sombra muito específica e bordas arredondadas suaves
+.panel {
+  margin-bottom: 20px;
+  background-color: #fff;
+  border: 1px solid transparent;
+  border-radius: 4px;
+  // Sombra suave e difusa (Estilo original)
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+}
+
+.panel-body {
+  padding: 20px; // Aumentei para dar mais "respiro" interno
+}
+
+.panel-default {
+  border-color: #ddd;
+
+  > .panel-heading {
+    color: #333;
+    background-color: #f5f5f5; // Fundo cinza clássico
+    border-color: #ddd;        // Linha divisória cinza
+    padding: 15px;             // Mais altura no cabeçalho
+    border-bottom: 1px solid transparent;
+    border-top-left-radius: 3px;
+    border-top-right-radius: 3px;
+
+    // Correção para o título ficar alinhado
+    font-size: 14px;
+    font-weight: 400;
+  }
+
+  // Garante que a linha divisória entre o cabeçalho e o corpo apareça
+  > .panel-heading + .panel-collapse > .panel-body {
+    border-top-color: #ddd;
+  }
+}
+
+// ---------------------------------------------------------
+// 2. Formulários e Inputs
+// ---------------------------------------------------------
+
+.form-group {
+  margin-bottom: 15px;
+}
+
+label {
+  display: inline-block;
+  max-width: 100%;
+  margin-bottom: 5px;
+  font-weight: 700;
+  font-size: 13px; // Fonte um pouco menor para ficar delicada
+  color: #333;
+}
+
+.form-control {
+  display: block;
+  width: 100%;
+  height: 40px; // Aumentei para 40px (parece maior na imagem original)
+  padding: 8px 12px; // Mais padding interno
+  font-size: 14px;
+  line-height: 1.42857143;
+  color: #555;
+  background-color: #fff;
+  background-image: none;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  // Sombra interna muito sutil
+  box-shadow: inset 0 1px 1px rgba(0, 0, 0, .075);
+  transition: border-color ease-in-out .15s, box-shadow ease-in-out .15s;
+
+  &:focus {
+    border-color: #66afe9;
+    outline: 0;
+    box-shadow: inset 0 1px 1px rgba(0,0,0,.075), 0 0 8px rgba(102, 175, 233, .6);
+  }
+}
+
+// ---------------------------------------------------------
+// 3. Botões
+// ---------------------------------------------------------
+
+.btn {
+  display: inline-block;
+  margin-bottom: 0;
+  font-weight: 600;
+  text-align: center;
+  white-space: nowrap;
+  vertical-align: middle;
+  touch-action: manipulation;
+  cursor: pointer;
+  background-image: none;
+  border: 1px solid transparent;
+  // Padding para o botão ficar "cheio" como na imagem
+  padding: 10px 16px;
+  font-size: 14px;
+  line-height: 1.42857143;
+  border-radius: 4px;
+  user-select: none;
+  box-shadow: none !important;
+}
+
+// Botão Verde de Login
+.btn-success {
+  color: #fff;
+  background-color: #00a740; // Verde exato da marca
+  border-color: #00a740;
+
+  &:hover, &:focus, &:active {
+    background-color: darken(#00a740, 10%);
+    border-color: darken(#00a740, 12%);
+  }
+}
+
+.btn-block {
+  display: block;
+  width: 100%;
+}
+
+// ---------------------------------------------------------
+// 4. Utilitários e Links
+// ---------------------------------------------------------
+
+.pull-right { float: right !important; }
+.pull-left { float: left !important; }
+.text-right { text-align: right !important; }
+.text-left { text-align: left !important; }
+.text-center { text-align: center !important; }
+
+// Links azuis do rodapé
+a {
+  color: #0085D9; // Azul exato da marca
+  text-decoration: none;
+  font-size: 13px; // Fonte ligeiramente menor para links auxiliares
+
+  &:hover,
+  &:focus {
+    color: darken(#0085D9, 15%);
+    text-decoration: underline;
+  }
+}
+
+// Ajuste do Grid
+@for $i from 1 through 12 {
+  .col-xs-#{$i} {
+    @extend .col-#{$i};
+  }
+}
+
+// Ocultar em telas pequenas
+.hidden-xs { display: none !important; }
+@media (min-width: 768px) {
+  .hidden-xs { display: block !important; }
+}
+
+// ---------------------------------------------------------
+// 5. Correção de Títulos e Tipografia
+// ---------------------------------------------------------
+h1, .h1 { font-size: 36px; margin-top: 20px; margin-bottom: 10px; font-weight: 500; line-height: 1.1; }
+h2, .h2 { font-size: 30px; margin-top: 20px; margin-bottom: 10px; font-weight: 500; line-height: 1.1; }
+// Ajuste do título principal (ForPDI...) para não quebrar linha errado
+h3, .h3 {
+  font-size: 24px;
+  margin-top: 20px;
+  margin-bottom: 10px;
+  font-weight: 500;
+  line-height: 1.2; // Aumentado ligeiramente para não ficar colado
+  color: #333;
+}
+h4, .h4 { font-size: 18px; margin-top: 10px; margin-bottom: 10px; font-weight: 500; line-height: 1.1; }

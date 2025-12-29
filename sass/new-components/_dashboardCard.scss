@@ -1,0 +1,18 @@
+.dashboard-card {
+  background-color: $background-color;
+  border-radius: 7px;
+  display: flex;
+  flex-direction: column;
+  padding: 1rem;
+  overflow: visible;
+  
+  // --- ADICIONA ISTO ---
+  height: 100%; 
+  // ---------------------
+
+  // Garante que o card cresça para acomodar todo o conteúdo
+  .ReactCollapse--collapse {
+    flex: 1 1 auto;
+  }
+}
+// ... resto do arquivo

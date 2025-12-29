@@ -1,0 +1,21 @@
+.radio-button-group-container {
+    display: flex;
+    flex-direction: column;
+    margin-top: 0 !important;
+}
+
+.radio-button-group-label {
+    margin-bottom: 30px;
+    text-align: left;
+}
+
+.radio-button-group-options {
+    display: flex;
+    flex-direction: row;
+}
+
+.horizontal-radio-group {
+    & > *:not(:last-child) {
+        margin-right: 20px;
+    }
+}

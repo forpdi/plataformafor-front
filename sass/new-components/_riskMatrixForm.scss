@@ -1,0 +1,28 @@
+.risk-matrix-form-container {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    overflow: hidden;
+}
+
+.risk-matrix-form-error-control {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    overflow: auto;
+    @extend .custom-scrollbar;
+}
+
+.risk-matrix-form {
+    margin: 0 !important;
+    display: grid;
+    gap: 5px;
+    grid-auto-columns: max-content;
+    max-width: 100%;
+    overflow-x: auto;
+    padding: 20px;
+
+    & .input-container {
+        margin: 0 !important;
+    }
+}

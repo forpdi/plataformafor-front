@@ -1,0 +1,64 @@
+.info-risk-matrix-container {
+    display: grid;
+    grid-template-rows: 80% 20%;
+    grid-template-columns: 10% 90%;
+    grid-template-areas: 
+    "vertical-label risk-matrix"
+    "       .       horizontal-label";
+
+    height: 100%;
+    width: 100%;
+    align-items: center;
+    justify-content: center;
+}
+
+.info-risk-matrix__horizontal-label {
+    text-align: center;
+    grid-area: horizontal-label;
+}
+
+.info-risk-matrix__vertical-label {
+    transform: rotate(-180deg);
+    writing-mode: vertical-rl;
+    z-index: 1;
+
+    grid-area: vertical-label,
+}
+
+.info-risk-matrix {
+    display: grid;
+    grid-auto-columns: minmax(0, 1fr);
+    grid-auto-rows: minmax(0, 1fr);
+    gap: 2px;
+    grid-auto-flow: row;
+
+    height: 100%;
+    border-radius: 8px;
+    padding: 20px 20px 5px 5px;
+
+    grid-area: risk-matrix;
+}
+
+.info-risk-matrix__cell {
+    display: flex;
+    border-radius: 8px;
+    align-items: center;
+    justify-content: center;
+    padding: 5px;
+}
+
+.info-risk-matrix__cell--clickable {
+    cursor: pointer;
+    &:hover {
+        box-shadow: inset 0 0 0 100px rgba(0, 0, 0, 0.05);
+        transition: $hover-transition-time;
+    }
+}
+
+.info-risk-matrix__cell-text {
+    text-align: center;
+    overflow: hidden;
+    text-transform: uppercase;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}

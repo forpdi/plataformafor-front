@@ -1,0 +1,60 @@
+$nested-table-row-bg-color: darken($background-color, 10%);
+
+.custom-table {
+  background-color: $background-color;
+  width: 100%;
+  word-break: break-word;
+  word-wrap: break-word;
+
+  & > thead {
+    background-color: darken($background-color, 2%);
+    th {
+      padding: 20px;
+      text-transform: uppercase;
+
+    }
+  }
+
+  & > tbody {
+    tr {
+      border-top: $border-color solid 1px;
+      border-bottom: $border-color solid 1px;
+      
+    }
+
+    td {
+      padding: 25px;
+
+    }
+  }
+
+  td, th {
+    font-size: 12px;
+    font-weight: normal;
+
+  }
+}
+
+.custom-table-nested {
+  & > tbody, & > thead {
+  background-color: $nested-table-row-bg-color;
+    & > tr {
+      border-top: darken($border-color, 5%) solid 1px;
+      border-bottom: darken($border-color, 5%) solid 1px;
+    }
+  }
+}
+
+.custom-table-nested__row {
+  background-color: $nested-table-row-bg-color;
+}
+
+@media (max-width: 1550px) {
+  .custom-table {
+    background-color: $background-color;
+    width: 100%;
+    word-break: break-word;
+    word-wrap: break-word;
+    table-layout: auto;
+  }
+}

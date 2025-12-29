@@ -1,0 +1,35 @@
+.check-box-option {
+  * {
+    margin-top: 0px !important;
+  }
+
+  &:not(:last-child) {
+    padding-bottom: 20px;
+  }
+
+  word-break: break-all;
+  word-wrap: break-word;
+  display: flex;
+  flex: 1;
+  align-items: center;
+  max-width: 100%;
+}
+
+.check-box-label {
+  white-space: normal;
+  word-wrap: break-word;
+  word-break: break-all;
+  text-transform: none;
+  padding-left: 0px;
+  cursor: pointer;
+}
+
+.check-group-border {
+  @extend .input;
+  @extend .frisco-border-color-1;
+  @extend .custom-scrollbar;
+}
+
+.check-group-border::-webkit-scrollbar-thumb {
+  border-radius: 100px;
+}

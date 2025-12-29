@@ -1,0 +1,14 @@
+.input {
+  border-width: 1px;
+  border-style: solid;
+  background-color: $background-color;
+  padding: 8px;
+  border-radius: $input-border-radius;
+  &::placeholder {
+    color: $placeholder-color;
+  }
+  &:disabled {
+    cursor: not-allowed;
+    color: darken($placeholder-color, 15);
+  }
+}

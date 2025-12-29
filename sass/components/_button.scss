@@ -1,0 +1,86 @@
+//
+// Button Styling
+//
+
+// Bootstrap Button Overrides
+.btn {
+  font-size: 13px;
+  font-weight: $font-weight-normal;
+
+  & > span:not(:last-child) {
+  	margin-right: 5px;
+  }
+}
+
+.btn:not(.btn-block) + .btn:not(.btn-block) {
+  margin-left: 10px;
+}
+
+// Navbar Search Button
+.navbar-btn.navbar-search-btn {
+  margin-top: 5px;
+  margin-bottom: 5px;
+}
+
+// Action Icons
+.fpdi-action-icon {
+	color: #999;
+	cursor: pointer;
+
+	&:hover {
+		color: #424242;
+	}
+}
+
+
+.btn-feedback {
+
+  & .mdi {
+    color: red;
+  }
+
+  & .mdi::before {
+    font-size: 14px;
+    top: 1px;
+  }
+}
+
+.btn-for {
+	color: $for-secondary;
+	background-color: $for-primary-button;
+	border-color: $for-btn-border;
+  &:hover {
+    color: $for-secondary;
+  }
+}
+
+.btn-default,
+.btn.btn-default {
+  background-color: #f8f9fb;
+  color: #4a4a4a;
+  border: 1px solid #cdd4db;
+  transition: background-color 0.2s ease, border-color 0.2s ease, color 0.2s ease, box-shadow 0.2s ease;
+
+  &:hover,
+  &:focus {
+    background-color: #eef1f5;
+    border-color: #b8c2cc;
+    color: #2f2f2f;
+    box-shadow: 0 0 0 0.15rem rgba(77, 95, 113, 0.12);
+  }
+}
+
+.btn-cancel-ghost {
+  background-color: #f8f9fb;
+  color: #4a4a4a;
+  border: 1px solid #cdd4db;
+  transition: background-color 0.2s ease, border-color 0.2s ease, color 0.2s ease, box-shadow 0.2s ease;
+
+  &:hover,
+  &:focus {
+    background-color: #eef1f5;
+    border-color: #b8c2cc;
+    color: #2f2f2f;
+    box-shadow: 0 0 0 0.15rem rgba(77, 95, 113, 0.12);
+  }
+}

@@ -1,0 +1,407 @@
+.fpdi-modal-header {
+	& .modal-title {
+		font-weight: $font-weight-semibold !important;
+		font-size: 18px;
+		color: #666666;
+	}
+}
+
+.fpdi-modal-body {
+	padding: 0 20px 20px;
+}
+
+.fpdi-modal-footer {
+	text-align: center;
+	padding: 10px 20px 20px;
+}
+
+.fpdi-modal-confirmCustom {
+	//width:400;
+	width: 600px;
+	transform: none;
+	padding: 0px 10px;
+}
+
+.modal-dialog {
+  margin: 10vh auto 0 auto;
+  max-width: 640px;
+  width: auto;
+}
+
+.modal-content {
+  border-radius: 10px;
+  box-shadow: 0 18px 44px rgba(0, 0, 0, 0.35);
+  border: none;
+}
+
+.modal-header {
+  border-bottom: none;
+  padding: 14px 18px 0 18px;
+  position: relative;
+}
+
+.modal-body {
+  padding: 10px 18px 8px 18px;
+}
+
+.modal-footer {
+  border-top: none;
+  padding: 8px 18px 16px 18px;
+}
+
+.modal-backdrop.show {
+  opacity: 0.7;
+}
+
+.modal-header .close,
+.modal-header .btn-close {
+  position: absolute;
+  right: 12px;
+  top: 12px;
+  padding: 0;
+  margin: 0;
+  border: none;
+  background: transparent;
+  font-size: 22px;
+  line-height: 1;
+  opacity: 0.6;
+}
+
+.modal-header .close:hover,
+.modal-header .btn-close:hover {
+  opacity: 1;
+}
+
+// Estilos específicos para CancelModalCustom
+.fpdi-modal-cancelCustom-dialog {
+	max-width: 580px !important;
+	width: 90% !important;
+
+	.fpdi-modal-confirmCustom {
+		width: 100% !important;
+		max-width: 100% !important;
+	}
+}
+
+.fpdi-modal-cancelCustom-header {
+	display: flex !important;
+	align-items: center !important;
+	justify-content: center !important;
+	padding: 12px 24px 8px 24px !important;
+	border-bottom: none !important;
+	position: relative !important;
+
+	.close {
+		position: absolute !important;
+		right: 24px !important;
+		top: 50% !important;
+		transform: translateY(-50%) !important;
+		margin: 0 !important;
+		padding: 4px 8px !important;
+		font-size: 28px !important;
+		line-height: 1 !important;
+		color: #999 !important;
+		opacity: 0.6 !important;
+		transition: opacity 0.2s, color 0.2s !important;
+
+		&:hover {
+			opacity: 1 !important;
+			color: #333 !important;
+		}
+	}
+}
+
+.fpdi-modal-cancelCustom-title {
+	display: flex !important;
+	align-items: center !important;
+	justify-content: center !important;
+	gap: 6px !important;
+	margin: 0 !important;
+	font-size: 18px !important;
+	font-weight: 600 !important;
+	color: #333 !important;
+
+	#modalIcon,
+	.mdi-cancelModalCustom,
+	i.mdi-cancelModalCustom {
+		font-size: 28px !important;
+		color: #FF0000 !important;
+		display: inline-block !important;
+		line-height: 1 !important;
+	}
+
+	span {
+		font-weight: 600 !important;
+	}
+}
+
+.fpdi-modal-cancelCustom-body {
+	padding: 12px 24px !important;
+	font-size: 14px !important;
+	line-height: 1.5 !important;
+	color: #555 !important;
+
+	p {
+		margin: 0 !important;
+	}
+}
+
+.fpdi-modal-cancelCustom-footer {
+	display: flex !important;
+	justify-content: center !important;
+	gap: 12px !important;
+	padding: 8px 24px 12px 24px !important;
+	border-top: none !important;
+}
+
+#cancelModalCustom {
+	background-color: #FF0000 !important;
+	border-color: #FF0000 !important;
+	color: #ffffff !important;
+	font-weight: 500 !important;
+	font-size: 14px !important;
+	padding: 8px 20px !important;
+	min-width: 80px !important;
+	transition: all 0.2s ease !important;
+
+	&:hover {
+		background-color: #e60000 !important;
+		border-color: #e60000 !important;
+		color: #ffffff !important;
+		transform: translateY(-1px) !important;
+		box-shadow: 0 2px 8px rgba(255, 0, 0, 0.3) !important;
+	}
+
+	&:active {
+		transform: translateY(0) !important;
+		background-color: #cc0000 !important;
+		border-color: #cc0000 !important;
+	}
+
+	&:focus {
+		background-color: #e60000 !important;
+		border-color: #e60000 !important;
+		color: #ffffff !important;
+		box-shadow: 0 0 0 0.25rem rgba(255, 0, 0, 0.25) !important;
+	}
+}
+
+.modal-button {
+	padding: 8px 20px;
+	min-width: 80px;
+	font-size: 14px;
+	font-weight: 500;
+	transition: all 0.2s ease;
+
+	&.btn-secondary {
+		background-color: #f8f9fa;
+		border-color: #dee2e6;
+		color: #495057;
+
+		&:hover {
+			background-color: #e9ecef;
+			border-color: #dee2e6;
+			color: #495057;
+		}
+	}
+}
+
+.mdi-cancelModalCustom {
+	color: #FF0000 !important;
+	font-size: 24px !important;
+}
+
+.mdi-confirmModalCustom{
+	color: #00A740;
+	font-size: 18px !important;
+}
+
+// Estilos específicos para ConfirmModalCustom
+.fpdi-modal-confirmCustom-dialog {
+	max-width: 580px !important;
+	width: 90% !important;
+
+	.fpdi-modal-confirmCustom {
+		width: 100% !important;
+		max-width: 100% !important;
+	}
+}
+
+.fpdi-modal-confirmCustom-header {
+	display: flex !important;
+	align-items: center !important;
+	justify-content: center !important;
+	padding: 12px 24px 8px 24px !important;
+	border-bottom: none !important;
+	position: relative !important;
+
+	.close {
+		position: absolute !important;
+		right: 24px !important;
+		top: 50% !important;
+		transform: translateY(-50%) !important;
+		margin: 0 !important;
+		padding: 4px 8px !important;
+		font-size: 28px !important;
+		line-height: 1 !important;
+		color: #999 !important;
+		opacity: 0.6 !important;
+		transition: opacity 0.2s, color 0.2s !important;
+
+		&:hover {
+			opacity: 1 !important;
+			color: #333 !important;
+		}
+	}
+}
+
+.fpdi-modal-confirmCustom-title {
+	display: flex !important;
+	align-items: center !important;
+	justify-content: center !important;
+	gap: 6px !important;
+	margin: 0 !important;
+	font-size: 18px !important;
+	font-weight: 600 !important;
+	color: #333 !important;
+
+	#modalIcon,
+	.mdi-confirmModalCustom,
+	i.mdi-confirmModalCustom {
+		font-size: 28px !important;
+		color: #28a745 !important;
+		display: inline-block !important;
+		line-height: 1 !important;
+	}
+
+	span {
+		font-weight: 600 !important;
+	}
+}
+
+.fpdi-modal-confirmCustom-body {
+	padding: 12px 24px !important;
+	font-size: 14px !important;
+	line-height: 1.5 !important;
+	color: #555 !important;
+
+	p {
+		margin: 0 !important;
+	}
+}
+
+.fpdi-modal-confirmCustom-footer {
+	display: flex !important;
+	justify-content: center !important;
+	gap: 12px !important;
+	padding: 8px 24px 12px 24px !important;
+	border-top: none !important;
+}
+
+#confirmModalCustom {
+	background-color: #28a745 !important;
+	border-color: #28a745 !important;
+	color: #ffffff !important;
+	font-weight: 500 !important;
+	font-size: 14px !important;
+	padding: 8px 20px !important;
+	min-width: 80px !important;
+	transition: all 0.2s ease !important;
+
+	&:hover {
+		background-color: #218838 !important;
+		border-color: #218838 !important;
+		color: #ffffff !important;
+		transform: translateY(-1px) !important;
+		box-shadow: 0 2px 8px rgba(40, 167, 69, 0.3) !important;
+	}
+
+	&:active {
+		transform: translateY(0) !important;
+		background-color: #1e7e34 !important;
+		border-color: #1e7e34 !important;
+	}
+
+	&:focus {
+		background-color: #218838 !important;
+		border-color: #218838 !important;
+		color: #ffffff !important;
+		box-shadow: 0 0 0 0.25rem rgba(40, 167, 69, 0.25) !important;
+	}
+}
+
+.centerTitleModalCompleteGoal {
+    text-align: center;
+}
+
+.fpdi-modal-confirmCustomUser {
+	width: 550px;
+	margin-top: 50%;
+	transform: translateX(-10%);
+}
+
+.modal-content-confirmUser {
+	padding: 0px 20px 10px 20px;
+}
+
+
+.frisco-modal-history {
+
+	& .modal-title {
+		font-weight: $font-weight-semibold !important;
+		font-size: 14px;
+		color: #666666;
+		padding: 10px 0px 0 20px;
+	}
+
+	border-radius: 10px;
+}
+
+.modal-graph {
+	top: 50%;
+	margin-top: -260px;
+}
+
+// Estilos para container de seções no ExportDocumentModal
+#container {
+	> div {
+		padding: 10px 14px;
+
+		&:not(:first-child) {
+			padding-left: 20px;
+		}
+	}
+
+	label {
+		display: flex !important;
+		align-items: center !important;
+		cursor: pointer;
+		margin: 0 !important;
+		font-size: 14px;
+		font-weight: 600;
+		gap: 16px !important;
+
+		input[type="checkbox"] {
+			margin-right: 16px !important;
+			margin-left: 0 !important;
+			margin-top: 0 !important;
+			margin-bottom: 0 !important;
+			width: 16px !important;
+			height: 16px !important;
+			accent-color: #28a745;
+			flex-shrink: 0;
+		}
+
+		span,
+		& > *:not(input),
+		& > text {
+			margin-left: 0 !important;
+			padding-left: 0 !important;
+		}
+	}
+
+	// Garantir espaçamento mesmo se não for label direto
+	input[type="checkbox"] {
+		margin-right: 16px !important;
+	}
+}

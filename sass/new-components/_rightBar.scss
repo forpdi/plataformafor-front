@@ -1,0 +1,28 @@
+.right-bar {
+  align-items: center;
+  background-color: $background-color;
+  display: flex;
+  flex-direction: column;
+  padding-top: 30px;
+  width: 55px;
+}
+
+.right-bar__buttons-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding-top: 20px;
+}
+
+.right-bar__button {
+  margin-top: 25px;
+}
+
+.forpdi-button {
+  outline: none;
+  border: none;
+  display: inline-block;
+  width: 2.6rem;
+  height: 2.6rem;
+  border-radius: 7px;
+}

@@ -1,0 +1,148 @@
+$for-primary-button: #63af66;
+$for-text-2: #63af66;
+$for-hover-1: #63af66;
+$for-hover-2: #1c3f1d;
+$for-hover-3: #edf1f3;
+$for-color-border: #f0f0f0 #e5e5e5 #dadada;
+
+$for-primary: #63af66;
+
+$for-background: #f6f6f6;
+$for-lighten-background: lighten($for-background, 2%);
+
+$for-secondary: #fff;
+$for-secondary-2: #f6f6f6;
+
+$for-shadowed: #0000001f;
+
+$for-text: #1C3F1D;
+$for-disabled-text: #c9c0c3;
+
+$for-hover-1: darken($for-primary, 10%);
+$for-hover-2: darken($for-secondary, 10%);
+$for-hover-3: darken($for-secondary-2, 10%);
+$for-hover-4: #0000003f;
+
+$for-border-color-1: #cac8c9;
+$for-btn-border: darken($for-primary-button, 4%) !default;
+
+$hover-transition-time: 0.2s;
+
+.for-primary-color {
+  color: $for-primary;
+}
+
+.for-primary-hover-color {
+  &:hover, &:active, &:focus {
+    color: $for-primary;
+  }
+}
+
+.for-text-color {
+  color: $for-text;
+}
+
+.for-text-hover-color {
+  &:hover, &:active, &:focus {
+    color: $for-text;
+  }
+}
+
+.for-primary-bg {
+  background-color: $for-primary;
+}
+
+.for-primary-border {
+  border-color: $for-primary;
+}
+
+.for-background-lighten-bg {
+  background-color: $for-lighten-background;
+}
+
+.for-secondary-color {
+  color: $for-secondary;
+}
+
+.for-secondary-2-bg {
+  background-color: $for-secondary-2;
+}
+
+.for-secondary-bg {
+  background-color: $for-secondary;
+}
+
+.for-background-bg {
+  background-color: $for-background;
+}
+
+.for-disabled-text-color {
+  color: $for-disabled-text;
+}
+
+.for-shadowed {
+  background-color: $for-shadowed;
+}
+
+.for-hover-1-bg {
+  &:hover {
+    background-color: $for-hover-1;
+    transition: $hover-transition-time;
+  }
+}
+
+.for-hover-2-bg {
+  &:hover {
+    background-color: $for-hover-2;
+    transition: $hover-transition-time;
+  }
+}
+
+.for-hover-3-bg {
+  &:hover {
+    background-color: $for-hover-3;
+    transition: $hover-transition-time;
+  }
+}
+
+.for-hover-4-bg {
+  &:hover {
+    background-color: $for-hover-4;
+    transition: $hover-transition-time;
+  }
+}
+
+.for-hover-secondary-color {
+  &:hover {
+    color: $for-secondary;
+  }
+}
+
+.for-border-color-1 {
+  border-color: $for-border-color-1;
+}
+
+.for-border-color-2 {
+  border-color: $for-secondary-2;
+}
+
+.for-active-1 {
+  background-color: $for-primary;
+  color: $for-secondary;
+}
+
+.for-radio-color-1 {
+  &:not(:checked) {
+    &:not(:hover) {
+      background-color: $for-background;
+    }
+  }
+
+  &:checked {
+    background-color: $for-primary;
+  }
+}
+
+.for-secondary-border-color {
+  border-color: $for-primary;
+}

@@ -1,0 +1,144 @@
+$frisco-primary: #805ad8;
+
+$frisco-background: #f6f2f3;
+$frisco-lighten-background: lighten($frisco-background, 2%);
+
+$frisco-secondary: #fff;
+$frisco-secondary-2: #f6f2f3;
+$frisco-community: #7D45D8;
+
+$frisco-shadowed: #0000001f;
+
+$frisco-text: #656162;
+$frisco-disabled-text: #c9c0c3;
+
+$frisco-hover-1: darken($frisco-primary, 10%);
+$frisco-hover-2: darken($frisco-secondary, 10%);
+$frisco-hover-3: darken($frisco-secondary-2, 10%);
+$frisco-hover-4: #0000003f;
+
+$frisco-border-color-1: #cac8c9;
+
+$hover-transition-time: 0.2s;
+
+.frisco-primary-color {
+  color: $frisco-primary;
+}
+
+.frisco-primary-hover-color {
+  &:hover, &:active, &:focus {
+    color: $frisco-primary;
+  }
+}
+
+.frisco-text-color {
+  color: $frisco-text;
+}
+
+.frisco-text-hover-color {
+  &:hover, &:active, &:focus {
+    color: $frisco-text;
+  }
+}
+
+.frisco-primary-bg {
+  background-color: $frisco-primary;
+}
+
+.frisco-primary-border {
+  border-color: $frisco-primary;
+}
+
+.frisco-background-lighten-bg {
+  background-color: $frisco-lighten-background;
+}
+
+.frisco-secondary-color {
+  color: $frisco-secondary;
+}
+
+.frisco-secondary-2-bg {
+  background-color: $frisco-secondary-2;
+}
+
+.frisco-secondary-bg {
+  background-color: $frisco-secondary;
+}
+
+.frisco-background-bg {
+  background-color: $frisco-background;
+}
+
+.frisco-disabled-text-color {
+  color: $frisco-disabled-text;
+}
+
+.frisco-shadowed {
+  background-color: $frisco-shadowed;
+}
+
+.frisco-hover-1-bg {
+  &:hover {
+    background-color: $frisco-hover-1;
+    transition: $hover-transition-time;
+  }
+}
+
+.frisco-hover-2-bg {
+  &:hover {
+    background-color: $frisco-hover-2;
+    transition: $hover-transition-time;
+  }
+}
+
+.frisco-hover-3-bg {
+  &:hover {
+    background-color: $frisco-hover-3;
+    transition: $hover-transition-time;
+  }
+}
+
+.frisco-hover-4-bg {
+  &:hover {
+    background-color: $frisco-hover-4;
+    transition: $hover-transition-time;
+  }
+}
+
+.frisco-hover-secondary-color{
+  &:hover{
+    color: $frisco-secondary;
+  }
+}
+
+.frisco-border-color-1 {
+  border-color: $frisco-border-color-1;
+}
+
+.frisco-border-color-2 {
+  border-color: $frisco-secondary-2;
+}
+
+.frisco-active-1 {
+  background-color: $frisco-primary;
+  color: $frisco-secondary;
+}
+
+.frisco-radio-color-1 {
+  &:not(:checked) {
+    &:not(:hover) {
+      background-color: $frisco-background;
+    }
+  }
+  &:checked {
+    background-color: $frisco-primary;
+  }
+}
+
+.frisco-community-bg {
+  background-color: $frisco-community;
+}
+
+.frisco-secondary-border-color {
+  border-color: $frisco-primary;
+}

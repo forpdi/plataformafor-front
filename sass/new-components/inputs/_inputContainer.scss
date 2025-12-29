@@ -1,0 +1,14 @@
+$input-container-margin: 3rem;
+
+.input-container:not(:first-child):not(:last-child) {
+  margin-top: $input-container-margin;
+  margin-bottom: $input-container-margin;
+}
+
+.input-container:last-child:not(:first-child) {
+  margin-top: $input-container-margin;
+}
+
+.input-container__with-margin-bottom {
+  margin-bottom: $input-container-margin;
+}

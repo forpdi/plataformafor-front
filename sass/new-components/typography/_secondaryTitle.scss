@@ -1,0 +1,15 @@
+.secondary-title {
+  position: relative;
+  min-width: 0;
+  overflow: hidden;
+  display: -webkit-box;
+  -webkit-box-orient: vertical;
+  -webkit-line-clamp: 2;
+  margin: 0;
+  font-size: 1.15rem;
+  text-transform: uppercase;
+  font-weight: normal;
+  line-height: 32px;
+  word-break: break-word;
+}
+

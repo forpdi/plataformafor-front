@@ -1,0 +1,63 @@
+.fpdi-plan-details {
+  	@include flexbox;
+  	@include flex-dir(row);
+
+    & > .fpdi-plan-tree {
+      @extend .fpdi-card;
+      @include flex(3);
+      max-width: 240px !important;
+      margin-right: 20px;
+
+      & > h1, & > .fpdi-plan-tree-title {
+        font-size: 18px;
+        font-weight: 600;
+        line-height: 100%;
+        margin: 0px 0px 10px 0px;
+      }
+    }
+
+   & > .fpdi-plan-tabs {
+      width: auto;
+      @include flex(7);
+      min-width: 0;
+      display: flex;
+      flex-direction: column;
+
+      .fpdi-tabs-content {
+        min-height: auto;
+        height: auto;
+        padding: 20px 20px 20px;
+      }
+	}
+
+	& > .frisco-plan-tabs {
+		//width:  70%;
+			@include flex(7);
+      min-width: 0;
+	}
+}
+
+.fpdi-attributesTitle {
+  margin-bottom: 15px;
+  padding-left: 0px;
+  display: flex;
+  flex-direction: column;
+}
+
+.fpdi-indicatorTitle {
+  margin-bottom: 15px;
+  padding-left: 0px;
+  display: flex;
+  flex-direction: column;
+}
+
+.btn-primary, .btn-success, .btn-info, .btn-warning, .btn-danger, .btn-for {
+    color: #fff !important;
+}
+
+/* No hover, mantém branco e dá uma leve transparência */
+.btn-primary:hover, .btn-success:hover, .btn-info:hover,
+.btn-warning:hover, .btn-danger:hover, .btn-for:hover {
+    color: #fff !important;
+    opacity: 0.85;
+}

@@ -1,0 +1,18 @@
+.multi-fields__col {
+  min-width: 47.5%;
+  max-width: 47.5%; 
+  &:first-child {
+    margin-right: 1.5%;
+  }
+}
+
+.multi-fields__row {
+  display: flex;
+  height: 70px;
+}
+
+.multi-fields__icon {
+  min-width: 2%;
+  max-width: 2%;
+  padding-top: 5px;
+}
